@@ -1392,7 +1392,7 @@ body.autoGroupEditing .layer.collectionGrouped{
 
   <div class="box trayTop"><h2>images & mock-ups</h2><input id="assetInput" class="hidden" type="file" accept="image/*" multiple onchange="loadTray(event,'asset')"><input id="mockupInput" class="hidden" type="file" accept="image/*" onchange="createMockupPage(event)"><input id="imageLayerInput" class="hidden" type="file" accept="image/*" onchange="addUploadedImageLayer(event)"><button class="full" onclick="assetInput.click()">Upload Design Assets</button><div id="assetTray" class="thumbGrid"></div><div class="grid2"><button onclick="addImageLayer('image')">add selected image</button><button onclick="mockupInput.click()">mock-up page</button></div><div class="grid2"><button onclick="addImageLayer('banner')">banner</button><button onclick="addImageLayer('overlay')">overlay</button></div><div class="aiDisclosureControls"><label class="checkRow"><input id="aiDisclosureToggle" type="checkbox" checked>add movable “AI generated” badge to mock-up</label><button class="full" onclick="addAIDisclosureBadge()">add AI generated badge</button><p class="smallText">Subtle white pill with fixed soft-grey text. Resize the badge shape, but the words stay readable.</p></div><p class="smallText">One tray for images, banners and mock-ups. Images now arrive at a useful page size instead of tiny; resize them afterwards if needed.</p></div>
   <div class="box batchSetBox"><h2>batch listing set</h2>
-    <p class="smallText">Etsy wants several photos per listing. One tap builds a coordinated 5-page set — main shot, detail, lifestyle/mock-up, an info card and a collection grid — all placeholders, ready to fill from the Design Tray.</p>
+    <p class="smallText">Etsy wants several photos per listing. One tap builds a coordinated 5-page set — main shot, detail, lifestyle/mock-up, an info card and a collection grid — all placeholders, ready to fill from the Design Tray. Labels follow whatever category you've picked in <strong>Etsy Assistant</strong> below (pattern, jewelry, candles...), so a pattern shop gets "colourway" slots and a candle shop gets "scent" slots automatically.</p>
     <button class="full primary" onclick="createBatchListingSet()">✨ create listing set</button>
     <div class="status" id="batchSetStatus">Nothing created yet.</div>
   </div>
@@ -21331,6 +21331,32 @@ body.leftCollapsed.rightCollapsed .stage.pattern,body.leftCollapsed.rightCollaps
 <script id="pp-batch-listing-set">
 (function(){
   function appState(){ try{ return (typeof state!=='undefined' && state) ? state : (window.state||null); }catch(e){ return window.state||null; } }
+  // Same 10 keys as the Etsy Assistant's category selector (LISTING_CATEGORIES), so picking a
+  // category there also flavours the batch set's placeholder names and starter copy - a pattern
+  // seller gets "main pattern" / "colourway" slots, a candle seller gets "main candle" / "scent
+  // option" slots, etc., instead of everyone seeing the same generic "design" wording.
+  const BATCH_SET_LABELS = {
+    pattern:{ main:'main pattern', detail:'pattern detail', lifestyle:'seamless repeat mock-up', pageType:'Pattern Listing Image',
+      heading:'Your Pattern Name Here', body:'Add repeat size, colourways, materials or usage rights here.', collectionPrefix:'colourway' },
+    apparel:{ main:'main design', detail:'close-up detail', lifestyle:'t-shirt mock-up', pageType:'Apparel Listing Image',
+      heading:'Your Design Title Here', body:'Add sizing, print method, materials or care instructions here.', collectionPrefix:'colour option' },
+    jewelry:{ main:'main piece', detail:'close-up detail', lifestyle:'styled mock-up', pageType:'Jewelry Listing Image',
+      heading:'Your Piece Name Here', body:'Add materials, sizing or chain length details here.', collectionPrefix:'style option' },
+    candles:{ main:'main candle', detail:'label close-up', lifestyle:'styled mock-up', pageType:'Candle Listing Image',
+      heading:'Your Candle Name Here', body:'Add scent notes, burn time or wax type here.', collectionPrefix:'scent option' },
+    stickers:{ main:'main sticker', detail:'close-up detail', lifestyle:'sticker mock-up', pageType:'Sticker Listing Image',
+      heading:'Your Sticker Name Here', body:'Add size, material or finish details here.', collectionPrefix:'design option' },
+    planners:{ main:'main cover', detail:'inside page', lifestyle:'planner mock-up', pageType:'Planner Listing Image',
+      heading:'Your Planner Name Here', body:'Add page count, size or binding details here.', collectionPrefix:'cover option' },
+    homedecor:{ main:'main art', detail:'close-up detail', lifestyle:'framed mock-up', pageType:'Wall Art Listing Image',
+      heading:'Your Art Title Here', body:'Add sizing, paper type or framing details here.', collectionPrefix:'size option' },
+    digital:{ main:'main file', detail:'close-up detail', lifestyle:'device mock-up', pageType:'Digital Listing Image',
+      heading:'Your File Name Here', body:'Add file formats, dimensions or usage rights here.', collectionPrefix:'design option' },
+    ceramics:{ main:'main mug', detail:'close-up detail', lifestyle:'styled mock-up', pageType:'Ceramics Listing Image',
+      heading:'Your Mug Name Here', body:'Add capacity, materials or care instructions here.', collectionPrefix:'colour option' },
+    general:{ main:'main design', detail:'close-up detail', lifestyle:'styled mock-up', pageType:'Etsy Listing Image',
+      heading:'Your Listing Title Here', body:'Add sizing, materials or care instructions here.', collectionPrefix:'option' }
+  };
   window.createBatchListingSet=function(){
     const s=appState();
     if(!s || !s.pages){ alert('Give the app a second to finish loading, then try again.'); return; }
@@ -21340,30 +21366,34 @@ body.leftCollapsed.rightCollapsed .stage.pattern,body.leftCollapsed.rightCollaps
     }
     if(typeof window.save==='function'){ try{ window.save(); }catch(e){} }
 
+    const categoryEl=document.getElementById('listingCategory');
+    const category=(categoryEl && categoryEl.value) || 'pattern';
+    const L=BATCH_SET_LABELS[category] || BATCH_SET_LABELS.general;
+
     const startIndex=s.pages.length;
-    for(let i=0;i<5;i++){ s.pages.push({type:'Etsy Listing Image', w:3000, h:2250, layers:[]}); }
+    for(let i=0;i<5;i++){ s.pages.push({type:L.pageType, w:3000, h:2250, layers:[]}); }
 
     function goTo(i){ s.selectedPage=startIndex+i; }
     function lastLayer(){ const p=s.pages[s.selectedPage]; return p && p.layers[p.layers.length-1]; }
 
-    goTo(0); window.addLkmPlaceholder('main design');
+    goTo(0); window.addLkmPlaceholder(L.main);
 
-    goTo(1); window.addLkmPlaceholder('detail shot');
+    goTo(1); window.addLkmPlaceholder(L.detail);
 
-    goTo(2); window.addLkmPlaceholder('lifestyle mock-up');
+    goTo(2); window.addLkmPlaceholder(L.lifestyle);
 
     goTo(3);
     window.addText();
     let heading=lastLayer();
-    if(heading){ Object.assign(heading,{text:'Your Listing Title Here',x:10,y:16,w:80,h:20,fontSize:64,bold:true,textAlign:'center',name:'heading'}); }
+    if(heading){ Object.assign(heading,{text:L.heading,x:10,y:16,w:80,h:20,fontSize:64,bold:true,textAlign:'center',name:'heading'}); }
     window.addText();
     let body=lastLayer();
-    if(body){ Object.assign(body,{text:'Add sizing, materials, care instructions or shipping details here.',x:14,y:44,w:72,h:40,fontSize:34,textAlign:'center',name:'body copy'}); }
+    if(body){ Object.assign(body,{text:L.body,x:14,y:44,w:72,h:40,fontSize:34,textAlign:'center',name:'body copy'}); }
 
     goTo(4);
     const gridSlots=[[8,10],[52,10],[8,52],[52,52]];
     gridSlots.forEach((pos,idx)=>{
-      window.addLkmPlaceholder('option '+(idx+1));
+      window.addLkmPlaceholder(L.collectionPrefix+' '+(idx+1));
       const slot=lastLayer();
       if(slot){ slot.x=pos[0]; slot.y=pos[1]; slot.w=40; slot.h=38; }
     });
@@ -21371,7 +21401,7 @@ body.leftCollapsed.rightCollapsed .stage.pattern,body.leftCollapsed.rightCollaps
     s.selectedPage=startIndex; s.selected=null;
     if(typeof window.render==='function') window.render();
     const st=document.getElementById('batchSetStatus');
-    if(st) st.textContent='Created 5 pages: main shot, detail, lifestyle/mock-up, info card and collection grid. Pick a design in the tray, then "fill all with selected design" to fill every placeholder at once.';
+    if(st) st.textContent='Created 5 pages: '+L.main+', '+L.detail+', '+L.lifestyle+', info card and a '+L.collectionPrefix+' grid. Pick a design in the tray, then "fill all with selected design" to fill every placeholder at once.';
   };
 })();
 </script>
