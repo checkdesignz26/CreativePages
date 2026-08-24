@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>Pattern Pages</title>
+<title>Creative Pages</title>
 <meta name="theme-color" content="#1a1024">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Pattern Pages">
+<meta name="apple-mobile-web-app-title" content="Creative Pages">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" id="patternPagesManifest" href="manifest.json">
 
@@ -1304,9 +1304,9 @@ body.autoGroupEditing .layer.collectionGrouped{
  <div class="brand">
    <div class="brandFlower" aria-hidden="true">✿</div>
    <div class="brandText">
-     <h1 class="brandTitle">Pattern Pages</h1>
-     <div class="tagline">create beautiful pattern pages for listings, socials & collections</div>
-     <div class="subtagline">a warm page studio for pattern designers on iPad</div>
+     <h1 class="brandTitle">Creative Pages</h1>
+     <div class="tagline">create beautiful listing images for your Etsy shop, socials & collections</div>
+     <div class="subtagline">a warm page studio for makers and creatives on iPad</div>
    </div>
  </div>
  <div class="toolbar compactToolbar" aria-label="workspace actions">
@@ -1345,40 +1345,59 @@ body.autoGroupEditing .layer.collectionGrouped{
  <aside class="side left">
   <div class="panelIntro leftIntro">
     <strong>Assets & pages</strong>
-    <span>Upload patterns, choose a page size, then build your layout with frames, strips and labels.</span>
+    <span>Upload your designs, choose a page size, then build your layout with frames, strips and labels.</span>
   </div>
-  <div class="box trayTop"><h2>pattern tray</h2><div class="panelBody"><input id="patternInput" class="hidden" type="file" accept="image/*" multiple onchange="loadTray(event,'pattern')"><button class="full primary" onclick="patternInput.click()" title="Add your own pattern images to the tray below">upload patterns</button><p class="smallText">Patterns live here. Choose a pattern, select a layout slot on the canvas, then fill that exact slot.</p><div id="patternTray" class="thumbGrid"></div><div class="grid2"><button onclick="placePatternOnPage()" title="Add the selected pattern as a new layer on the page">place pattern</button><button onclick="fillSelectedFrame()" title="Fill the currently selected frame or slot with the selected pattern">fill selected slot</button></div><div class="grid2"><button class="primary" onclick="magicFillEmptySlots()" title="Fill every empty slot at once with patterns from the tray">✨ fill all empty</button><button onclick="replaceAllShowcaseSlots()" title="Replace every filled slot with the selected pattern">replace all</button></div></div></div>
-  <div class="box trayTop"><h2>pattern showcase</h2><div class="panelBody"><p class="smallText"><strong>Generate a clean layout.</strong> Your patterns stay in the Pattern Tray until you choose where they go.</p><div class="showcaseTypeGrid" role="radiogroup" aria-label="layout type"><button id="showcaseStripsBtn" class="active" onclick="chooseShowcaseLayout('strips')">strips</button><button id="showcaseSquaresBtn" onclick="chooseShowcaseLayout('squares')">squares</button><button id="showcaseRectanglesBtn" onclick="chooseShowcaseLayout('rectangles')">rectangles</button><button id="showcaseCirclesBtn" onclick="chooseShowcaseLayout('circles')">circles</button></div><div id="stripDirectionControls" class="stripDirectionBox">
+  <div class="box trayTop"><h2>design tray</h2><div class="panelBody"><input id="patternInput" class="hidden" type="file" accept="image/*" multiple onchange="loadTray(event,'pattern')"><button class="full primary" onclick="patternInput.click()" title="Add your own design images to the tray below">upload designs</button><p class="smallText">Your designs live here. Choose one, select a layout slot on the canvas, then fill that exact slot.</p><div id="patternTray" class="thumbGrid"></div><div class="grid2"><button onclick="placePatternOnPage()" title="Add the selected design as a new layer on the page">place design</button><button onclick="fillSelectedFrame()" title="Fill the currently selected frame or slot with the selected design">fill selected slot</button></div><div class="grid2"><button class="primary" onclick="magicFillEmptySlots()" title="Fill every empty slot at once with designs from the tray">✨ fill all empty</button><button onclick="replaceAllShowcaseSlots()" title="Replace every filled slot with the selected design">replace all</button></div></div></div>
+  <div class="box trayTop"><h2>design showcase</h2><div class="panelBody"><p class="smallText"><strong>Generate a clean layout.</strong> Your designs stay in the Design Tray until you choose where they go.</p><div class="showcaseTypeGrid" role="radiogroup" aria-label="layout type"><button id="showcaseStripsBtn" class="active" onclick="chooseShowcaseLayout('strips')">strips</button><button id="showcaseSquaresBtn" onclick="chooseShowcaseLayout('squares')">squares</button><button id="showcaseRectanglesBtn" onclick="chooseShowcaseLayout('rectangles')">rectangles</button><button id="showcaseCirclesBtn" onclick="chooseShowcaseLayout('circles')">circles</button></div><div id="stripDirectionControls" class="stripDirectionBox">
   <div class="stripDirectionTitle">strip direction</div>
   <div class="stripDirectionGrid" role="radiogroup" aria-label="strip direction">
     <button id="stripDirVerticalBtn" class="active" type="button" onclick="stripDirection='vertical';chooseStripDirection('vertical')">vertical</button>
     <button id="stripDirHorizontalBtn" type="button" onclick="stripDirection='horizontal';chooseStripDirection('horizontal')">horizontal stash</button>
   </div>
   <p class="smallText">Horizontal stash stacks full-width fabric strips with stronger shadows.</p>
-</div><div class="frameCountRow"><label>number of slots</label><div class="frameStepper" aria-label="number of pattern slots"><button type="button" onclick="changeFrameCount(-1)" title="Remove a pattern slot">−</button><span id="cardCountDisplay">1</span><button type="button" onclick="changeFrameCount(1)" title="Add a pattern slot">+</button><input id="cardCount" type="hidden" value="1"></div></div><label class="checkRow" id="showcaseCaptionRow"><input id="showcaseAddCaptions" type="checkbox">add a caption below each shape</label><button class="full primary" onclick="generateSelectedShowcaseLayout()">generate layout</button><p class="smallText">After generating: tap a strip, tile, rectangle or circle so it highlights, then choose a pattern from the tray and tap <strong>fill selected slot</strong>.</p></div></div>
-  <div class="box trayTop frameWowBox"><h2>frames</h2><div class="panelBody"><p class="smallText"><strong>Add a pattern frame.</strong> Choose a built-in shape or add your own PNG shape with transparency, then fill it from the Pattern Tray.</p><button class="full primary" onclick="toggleFramePicker()">add frame</button><div id="framePicker" class="framePicker hidden"><div class="framePickerTitle">built-in frames</div><div class="frameShapeGrid"><button onclick="addPatternFrame('flower')">✿<span>flower</span></button><button onclick="addPatternFrame('heart')">♥<span>heart</span></button><button onclick="addPatternFrame('star')">★<span>star</span></button><button onclick="addPatternFrame('circle')">●<span>circle</span></button><button onclick="addPatternFrame('arch')">⌒<span>arch</span></button><button onclick="addPatternFrame('label')">▭<span>label</span></button></div><div class="framePickerTitle">custom frame</div><input id="customFrameInput" class="hidden" type="file" accept="image/png,image/*" onchange="addCustomFrameFromPNG(event)"><button class="full" onclick="customFrameInput.click()">add your PNG</button><p class="smallText">Tip: use a PNG shape with a transparent background. Pattern Pages turns the visible shape into a fillable frame.</p></div></div></div>
+</div><div class="frameCountRow"><label>number of slots</label><div class="frameStepper" aria-label="number of design slots"><button type="button" onclick="changeFrameCount(-1)" title="Remove a design slot">−</button><span id="cardCountDisplay">1</span><button type="button" onclick="changeFrameCount(1)" title="Add a design slot">+</button><input id="cardCount" type="hidden" value="1"></div></div><label class="checkRow" id="showcaseCaptionRow"><input id="showcaseAddCaptions" type="checkbox">add a caption below each shape</label><button class="full primary" onclick="generateSelectedShowcaseLayout()">generate layout</button><p class="smallText">After generating: tap a strip, tile, rectangle or circle so it highlights, then choose a design from the tray and tap <strong>fill selected slot</strong>.</p></div></div>
+  <div class="box trayTop frameWowBox"><h2>frames</h2><div class="panelBody"><p class="smallText"><strong>Add a design frame.</strong> Choose a built-in shape or add your own PNG shape with transparency, then fill it from the Design Tray.</p><button class="full primary" onclick="toggleFramePicker()">add frame</button><div id="framePicker" class="framePicker hidden"><div class="framePickerTitle">built-in frames</div><div class="frameShapeGrid"><button onclick="addPatternFrame('flower')">✿<span>flower</span></button><button onclick="addPatternFrame('heart')">♥<span>heart</span></button><button onclick="addPatternFrame('star')">★<span>star</span></button><button onclick="addPatternFrame('circle')">●<span>circle</span></button><button onclick="addPatternFrame('arch')">⌒<span>arch</span></button><button onclick="addPatternFrame('label')">▭<span>label</span></button></div><div class="framePickerTitle">custom frame</div><input id="customFrameInput" class="hidden" type="file" accept="image/png,image/*" onchange="addCustomFrameFromPNG(event)"><button class="full" onclick="customFrameInput.click()">add your PNG</button><p class="smallText">Tip: use a PNG shape with a transparent background. Creative Pages turns the visible shape into a fillable frame.</p></div></div></div>
 
 
   <div class="box trayTop customMockupBox"><h2>custom mock-up</h2><div class="panelBody">
-    <p class="customMockupHint"><strong>Procreate → Pattern Pages.</strong> Upload your mock-up background and white mask, then create the mock-up in one click. Picking a pattern first fills it right away - skip that step and it's created as a placeholder (clipped and blended the same way) that you can fill later.</p>
+    <p class="customMockupHint"><strong>Procreate → Creative Pages.</strong> Upload your mock-up background and white mask, then create the mock-up in one click. Picking a design first fills it right away - skip that step and it's created as a placeholder (clipped and blended the same way) that you can fill later.</p>
+    <label for="customMockupType">mock-up type</label>
+    <select id="customMockupType" onchange="applyMockupTypePreset(this.value)">
+      <option value="pattern">seamless pattern / fabric</option>
+      <option value="apparel">t-shirt / apparel</option>
+      <option value="mug">mug / tumbler</option>
+      <option value="tote">tote bag</option>
+      <option value="candle">candle label</option>
+      <option value="sticker">sticker sheet</option>
+      <option value="planner">planner / journal cover</option>
+      <option value="print">framed art print</option>
+      <option value="other">other / custom</option>
+    </select>
+    <label class="checkRow" id="customMockupRepeatRow"><input id="customMockupRepeatToggle" type="checkbox" checked onchange="toggleCustomMockupRepeat(this.checked)">tile as a seamless repeat</label>
     <div class="customMockupPreviewGrid">
       <div class="customMockupPreview" id="customMockupBgPreview">mock-up<br>background</div>
       <div class="customMockupPreview" id="customMockupMaskPreview">white<br>mask</div>
     </div>
     <div class="customMockupStep"><strong>1. mock-up background</strong><input id="customMockupBgInput" type="file" accept="image/*" onchange="loadCustomMockupPart(event,'bg')"></div>
     <div class="customMockupStep"><strong>2. white mask</strong><input id="customMockupMaskInput" type="file" accept="image/*" onchange="loadCustomMockupPart(event,'mask')"></div>
-    <div class="rangeRow"><label>repeat size</label><input id="customMockupRepeat" type="range" min="30" max="110" value="62"></div>
+    <div class="rangeRow" id="customMockupRepeatSliderRow"><label id="customMockupRepeatLabel">repeat size</label><input id="customMockupRepeat" type="range" min="30" max="110" value="62"></div>
     <div class="rangeRow"><label>move left/right</label><input id="customMockupOffsetX" type="range" min="-100" max="100" value="0"></div>
     <div class="rangeRow"><label>move up/down</label><input id="customMockupOffsetY" type="range" min="-100" max="100" value="0"></div>
     <div class="rangeRow"><label>texture</label><input id="customMockupTexture" type="range" min="0" max="100" value="55"></div>
     <div class="rangeRow"><label>blend</label><select id="customMockupBlendMode"><option value="multiply" selected>multiply</option><option value="soft-light">soft light</option><option value="overlay">overlay</option><option value="normal">normal</option></select></div>
     <button class="full primary" onclick="createCustomMockupFromMask()">create live custom mock-up ✨</button>
     <div class="status" id="customMockupStatus">mock-up needed · mask needed</div>
-    <p class="mockupTinyNote">White mask area fills with the selected pattern. The new live mock-up stays editable with the sliders after creation.</p>
+    <p class="mockupTinyNote" id="customMockupTinyNote">White mask area fills with the selected design. The new live mock-up stays editable with the sliders after creation.</p>
   </div></div>
 
   <div class="box trayTop"><h2>images & mock-ups</h2><input id="assetInput" class="hidden" type="file" accept="image/*" multiple onchange="loadTray(event,'asset')"><input id="mockupInput" class="hidden" type="file" accept="image/*" onchange="createMockupPage(event)"><input id="imageLayerInput" class="hidden" type="file" accept="image/*" onchange="addUploadedImageLayer(event)"><button class="full" onclick="assetInput.click()">Upload Design Assets</button><div id="assetTray" class="thumbGrid"></div><div class="grid2"><button onclick="addImageLayer('image')">add selected image</button><button onclick="mockupInput.click()">mock-up page</button></div><div class="grid2"><button onclick="addImageLayer('banner')">banner</button><button onclick="addImageLayer('overlay')">overlay</button></div><div class="aiDisclosureControls"><label class="checkRow"><input id="aiDisclosureToggle" type="checkbox" checked>add movable “AI generated” badge to mock-up</label><button class="full" onclick="addAIDisclosureBadge()">add AI generated badge</button><p class="smallText">Subtle white pill with fixed soft-grey text. Resize the badge shape, but the words stay readable.</p></div><p class="smallText">One tray for images, banners and mock-ups. Images now arrive at a useful page size instead of tiny; resize them afterwards if needed.</p></div>
-  <div class="box"><h2>pages</h2><div class="launchBadge">Pattern Pages workspace</div><p class="smallText">Your pages stack here like a little design desk. Choose a format in <strong>page size & presets</strong>, then add it as a new page.</p><button class="full" onclick="deleteCurrentPage()">delete current page</button>
+  <div class="box batchSetBox"><h2>batch listing set</h2>
+    <p class="smallText">Etsy wants several photos per listing. One tap builds a coordinated 5-page set — main shot, detail, lifestyle/mock-up, an info card and a collection grid — all placeholders, ready to fill from the Design Tray.</p>
+    <button class="full primary" onclick="createBatchListingSet()">✨ create listing set</button>
+    <div class="status" id="batchSetStatus">Nothing created yet.</div>
+  </div>
+
+  <div class="box"><h2>pages</h2><div class="launchBadge">Creative Pages workspace</div><p class="smallText">Your pages stack here like a little design desk. Choose a format in <strong>page size & presets</strong>, then add it as a new page.</p><button class="full" onclick="deleteCurrentPage()">delete current page</button>
   <!-- Real report: this used to live at the bottom of "extra design elements" (an unrelated,
        add-things panel) as "blank page", where it was both easy to miss and easy to misread as
        adding a new blank page. Moved next to its comparably-destructive sibling
@@ -1424,25 +1443,55 @@ body.autoGroupEditing .layer.collectionGrouped{
 </div>
 
 <div class="box listingHelperBox"><h2>Etsy Assistant ✨</h2>
-  <p class="smallText">Generate Etsy tags, long-tail keywords, listing titles and social media keywords from your pattern theme.</p>
-  <label for="listingPatternName">pattern name</label>
+  <p class="smallText">Generate Etsy tags, long-tail keywords, listing titles and social media keywords for any kind of listing.</p>
+  <label for="listingCategory">what are you selling?</label>
+  <select id="listingCategory">
+    <option value="pattern">seamless pattern / surface design</option>
+    <option value="apparel">apparel &amp; print-on-demand (shirts, svg, sublimation)</option>
+    <option value="jewelry">jewelry &amp; accessories</option>
+    <option value="candles">candles &amp; home fragrance</option>
+    <option value="stickers">stickers &amp; vinyl</option>
+    <option value="planners">planners, journals &amp; paper goods</option>
+    <option value="homedecor">wall art &amp; home decor</option>
+    <option value="digital">digital downloads &amp; clipart</option>
+    <option value="ceramics">ceramics, pottery &amp; mugs</option>
+    <option value="general">other handmade item</option>
+  </select>
+  <label for="listingPatternName">item name</label>
   <textarea id="listingPatternName" placeholder="e.g. Strawberry Picnic"></textarea>
-  <label for="listingKeywords">pattern theme</label>
-  <textarea id="listingKeywords" placeholder="e.g. strawberries, summer fruit, cottagecore, seamless pattern"></textarea>
+  <label for="listingKeywords">item details / theme</label>
+  <textarea id="listingKeywords" placeholder="e.g. strawberries, summer fruit, cottagecore"></textarea>
   <div class="grid2"><button class="primary" onclick="generateListingHelper()">generate Etsy ideas</button><button onclick="clearListingHelper()">clear</button></div>
   <button class="full" onclick="downloadEtsyAssistantTxt()">save EtsyAssistant.txt</button>
   <div class="helperOutputTitle"><strong>etsy tags</strong><button onclick="copyListingOutput('etsyTagsOutput')">copy</button></div>
   <textarea id="etsyTagsOutput" class="output" readonly placeholder="13 Etsy-friendly tag ideas will appear here. Suggestions only — no ranking promises."></textarea>
   <div class="helperOutputTitle"><strong>long-tail keywords</strong><button onclick="copyListingOutput('longTailKeywordsOutput')">copy</button></div>
-  <textarea id="longTailKeywordsOutput" class="output" readonly placeholder="Pattern-related long-tail keyword phrases will appear here."></textarea>
+  <textarea id="longTailKeywordsOutput" class="output" readonly placeholder="Long-tail keyword phrases will appear here."></textarea>
   <div class="helperOutputTitle"><strong>listing title</strong><button onclick="copyListingOutput('listingTitleOutput')">copy</button></div>
   <textarea id="listingTitleOutput" class="output" readonly placeholder="A listing title idea will appear here."></textarea>
   <div class="helperOutputTitle"><strong>pinterest keywords</strong><button onclick="copyListingOutput('pinterestKeywordsOutput')">copy</button></div>
   <textarea id="pinterestKeywordsOutput" class="output" readonly placeholder="Pinterest discovery keywords will appear here."></textarea>
   <div class="helperOutputTitle"><strong>instagram hashtags</strong><button onclick="copyListingOutput('instagramHashtagsOutput')">copy</button></div>
   <textarea id="instagramHashtagsOutput" class="output" readonly placeholder="Instagram hashtags will appear here."></textarea>
-  <div class="installNote"><strong>gentle note:</strong> These are writing and keyword ideas for pattern listings — not ranking or sales guarantees.</div>
+  <div class="installNote"><strong>gentle note:</strong> These are writing and keyword ideas for your listing — not ranking or sales guarantees.</div>
 </div>
+
+<div class="box brandKitBox"><h2>shop brand kit</h2>
+  <p class="smallText">Save your shop's look once, then apply it to text and labels across your listing images with one tap.</p>
+  <label for="brandShopName">shop name</label>
+  <input id="brandShopName" type="text" placeholder="e.g. Willow &amp; Sage Studio">
+  <div class="grid2">
+    <div class="colorRow"><label class="smallText">primary colour</label><input id="brandColorPrimary" type="color" value="#1a1024"></div>
+    <div class="colorRow"><label class="smallText">secondary colour</label><input id="brandColorSecondary" type="color" value="#ffffff"></div>
+  </div>
+  <label for="brandFont">brand font</label>
+  <select id="brandFont"></select>
+  <div class="grid2"><button class="primary" onclick="saveBrandKit()">save brand kit</button><button onclick="loadBrandKit()">reload saved</button></div>
+  <div class="grid2"><button class="primary" onclick="applyBrandKit('page')">apply to this page</button><button onclick="applyBrandKit('all')">apply to all pages</button></div>
+  <div class="status" id="brandKitStatus">No brand kit saved yet.</div>
+  <p class="mockupTinyNote">Applying a brand kit updates the font colour on text &amp; labels to your primary colour, badge fills to your secondary colour, and switches their font to your brand font. It never touches your uploaded designs or photos.</p>
+</div>
+
 <div class="box"><h2>extra design elements</h2>
   <div class="grid3">
     <button onclick="addShape('rectangle')">+ rectangle</button>
@@ -1461,7 +1510,7 @@ body.autoGroupEditing .layer.collectionGrouped{
   <div class="box"><h2>edit & adjust</h2><div class="rangeRow"><label>scale</label><input id="scale" type="range" min="20" max="250" value="100" oninput="applyControls()"></div><div class="rangeRow"><label>opacity</label><input id="opacity" type="range" min="0" max="100" value="100" oninput="applyControls()"></div><div class="rangeRow"><label>x move</label><input id="xpos" type="range" min="-30" max="120" value="10" oninput="applyControls()"></div><div class="rangeRow"><label>y move</label><input id="ypos" type="range" min="-30" max="120" value="10" oninput="applyControls()"></div><div class="rangeRow"><label>width</label><input id="width" type="range" min="3" max="130" value="40" oninput="applyControls()"></div><div class="rangeRow"><label>height</label><input id="height" type="range" min="3" max="130" value="20" oninput="applyControls()"></div><div class="rangeRow"><label>rotate</label><input id="rotate" type="range" min="-180" max="180" value="0" oninput="applyControls()"></div><div class="grid2"><button onclick="fitSelected('width')">fit width</button><button onclick="fitSelected('canvas')">fit canvas</button></div><div class="editMiniGroup"><button onclick="setSelectedFit('contain')">fit</button><button onclick="setSelectedFit('cover')">fill</button><button onclick="setSelectedFit('cover');fitSelected('canvas')">cover page</button><button onclick="deselect()">done</button></div><div class="gestureHint">Tap empty canvas to deselect. Pinch with two fingers to zoom the page. Two-finger double tap = undo.</div><div class="status" id="selectedHint">Nothing selected</div></div>
   <div class="box" id="alignPanel"><h2>alignment</h2><p class="smallText">Align the selected text, banner, image, label or frame to the page.</p><div class="grid3"><button onclick="alignSelected('left')">left</button><button onclick="alignSelected('hcenter')">centre</button><button onclick="alignSelected('right')">right</button></div><div class="grid3"><button onclick="alignSelected('top')">top</button><button onclick="alignSelected('vcenter')">middle</button><button onclick="alignSelected('bottom')">bottom</button></div><div class="grid2"><button onclick="alignSelected('centerBoth')">centre page</button><button onclick="alignSelected('safeMiddle')">safe middle</button></div></div>
   <div class="box matchmakerBox"><h2>font matchmaker</h2>
-  <p class="smallText">Choose the main font you like, then let Pattern Pages suggest matching fonts. This is separate from quick presets.</p>
+  <p class="smallText">Choose the main font you like, then let Creative Pages suggest matching fonts. This is separate from quick presets.</p>
   <label class="smallText" for="matchBaseFont">choose your main font</label>
   <select id="matchBaseFont" class="full" onchange="generateFontMatches()">
     <option value="Georgia">Georgia</option>
@@ -2266,7 +2315,7 @@ function renderFrameList(){
  if(!el)return;
  el.innerHTML='';
  let frames=current().layers.filter(l=>['strip','card','pattern','frame'].includes(l.type)).sort((a,b)=>(b.z||0)-(a.z||0));
- if(!frames.length){el.innerHTML='<div class="smallText">No pattern frames yet. Add strips, cards or frames above.</div>';return;}
+ if(!frames.length){el.innerHTML='<div class="smallText">No design frames yet. Add strips, cards or frames above.</div>';return;}
  frames.forEach(l=>el.appendChild(rowForLayer(l,'frames')));
 }
 
@@ -2961,7 +3010,7 @@ function renderLayers(){
  updateAllGroupBounds();
  let el=$('layerList');el.innerHTML='';
  let layers=current().layers.slice().sort((a,b)=>(b.z||0)-(a.z||0));
- if(!layers.length){el.innerHTML='<div class="smallText">No layers yet. Add a pattern frame, banner, label or shape.</div>';return;}
+ if(!layers.length){el.innerHTML='<div class="smallText">No layers yet. Add a design frame, banner, label or shape.</div>';return;}
 
  const groups=layers.filter(isGroupLayer);
  const children=new Set(layers.filter(l=>l.groupId).map(l=>l.id));
@@ -3556,6 +3605,44 @@ function usefulMockupLayerBox(img){
   if(h>88){h=88;w=h*ratio;}
   return{x:(100-w)/2,y:(100-h)/2,w,h};
 }
+const MOCKUP_TYPE_NOTES = {
+  pattern:'White mask area fills with the selected design, tiled as a seamless repeat. The new live mock-up stays editable with the sliders after creation.',
+  apparel:'White mask area fills with the selected design as one piece — good for a t-shirt or apparel print. The new live mock-up stays editable with the sliders after creation.',
+  mug:'White mask area fills with the selected design as one piece — good for a mug or tumbler wrap. The new live mock-up stays editable with the sliders after creation.',
+  tote:'White mask area fills with the selected design as one piece — good for a tote bag print. The new live mock-up stays editable with the sliders after creation.',
+  candle:'White mask area fills with the selected design as one piece — good for a candle label. The new live mock-up stays editable with the sliders after creation.',
+  sticker:'White mask area fills with the selected design as one piece — good for a sticker sheet. The new live mock-up stays editable with the sliders after creation.',
+  planner:'White mask area fills with the selected design as one piece — good for a planner or journal cover. The new live mock-up stays editable with the sliders after creation.',
+  print:'White mask area fills with the selected design as one piece — good for a framed art print. The new live mock-up stays editable with the sliders after creation.',
+  other:'White mask area fills with the selected design as one piece. The new live mock-up stays editable with the sliders after creation.'
+};
+function toggleCustomMockupRepeat(enabled){
+  const slider=document.getElementById('customMockupRepeat');
+  const label=document.getElementById('customMockupRepeatLabel');
+  if(label) label.textContent = enabled ? 'repeat size' : 'design size';
+  if(slider){
+    if(enabled){
+      slider.min=30; slider.max=110;
+      if(Number(slider.value)>=108) slider.value=62;
+    } else {
+      // Kept at/above 100: below that, drawRepeatedPatternCover's tile becomes
+      // smaller than the canvas and starts visibly repeating again - defeating
+      // the point of this mode, which is a single, non-tiling design fill.
+      slider.min=100; slider.max=220;
+      if(Number(slider.value)<100) slider.value=110;
+    }
+    slider.dispatchEvent(new Event('input',{bubbles:true}));
+    slider.dispatchEvent(new Event('change',{bubbles:true}));
+  }
+}
+function applyMockupTypePreset(type){
+  const repeatToggle=document.getElementById('customMockupRepeatToggle');
+  const wantsRepeat = type==='pattern';
+  if(repeatToggle) repeatToggle.checked=wantsRepeat;
+  toggleCustomMockupRepeat(wantsRepeat);
+  const note=document.getElementById('customMockupTinyNote');
+  if(note) note.textContent = MOCKUP_TYPE_NOTES[type] || MOCKUP_TYPE_NOTES.other;
+}
 async function createCustomMockupFromMask(){
   const patternSrc=customMockupSelectedPatternSrc();
   if(!customMockupState.bg){alert('Upload a mock-up background first.');return;}
@@ -3761,16 +3848,16 @@ const QUICKSTART_STEPS = [
     body: 'Left panel &rarr; <strong>page size &amp; presets</strong> &rarr; pick a preset (Etsy, Instagram, Pinterest, Facebook) &rarr; <strong>add new page</strong>.'
   },
   {
-    title: '2. Upload your pattern',
-    body: 'Left panel &rarr; <strong>pattern tray</strong> &rarr; <strong>upload patterns</strong>.'
+    title: '2. Upload your design',
+    body: 'Left panel &rarr; <strong>design tray</strong> &rarr; <strong>upload designs</strong>.'
   },
   {
     title: '3. Build a layout',
-    body: '<strong>pattern showcase</strong> &rarr; pick a layout (strips / squares / rectangles / circles) &rarr; set the number of slots &rarr; <strong>generate layout</strong>.'
+    body: '<strong>design showcase</strong> &rarr; pick a layout (strips / squares / rectangles / circles) &rarr; set the number of slots &rarr; <strong>generate layout</strong>.'
   },
   {
     title: '4. Fill it',
-    body: 'Tap a slot on the canvas, select your pattern in the tray, then tap <strong>fill selected slot</strong>. Or skip the tapping and use <strong>&#10024; fill all empty</strong> to fill every slot at once.'
+    body: 'Tap a slot on the canvas, select your design in the tray, then tap <strong>fill selected slot</strong>. Or skip the tapping and use <strong>&#10024; fill all empty</strong> to fill every slot at once.'
   },
   {
     title: '5. Export',
@@ -3782,7 +3869,7 @@ const QUICKSTART_SHORTCUTS = [
   ['Add a realistic mock-up', '<strong>custom mock-up</strong> &rarr; upload background + white mask &rarr; <strong>create live custom mock-up &#10024;</strong>'],
   ['Add a decorative shaped frame', '<strong>frames</strong> &rarr; <strong>add frame</strong> &rarr; pick a shape &rarr; fill it like a slot'],
   ['Add text or a label', 'the <strong>badges &amp; labels</strong> or <strong>text</strong> panel'],
-  ['Generate Etsy tags &amp; titles', '<strong>Etsy Assistant</strong> &rarr; enter pattern name + theme &rarr; <strong>generate Etsy ideas</strong>'],
+  ['Generate Etsy tags &amp; titles', '<strong>Etsy Assistant</strong> &rarr; pick a category, enter item name + details &rarr; <strong>generate Etsy ideas</strong>'],
   ['Save your work', 'Top toolbar &rarr; <strong>quick save</strong>, or <strong>save .ppages</strong> for a proper backup file'],
   ['Undo a mistake', 'Top toolbar <strong>undo</strong>, or a two-finger double-tap on the canvas']
 ];
@@ -3798,12 +3885,12 @@ function ppBuildQuickStartHTML(){
 
   return ''+
     '<div class="qsHeader">'+
-      '<span class="qsBadge">PATTERN PAGES</span>'+
+      '<span class="qsBadge">CREATIVE PAGES</span>'+
       '<h2>Quick Start Guide</h2>'+
       '<p>Get your first design exported in under 5 minutes.</p>'+
     '</div>'+
     '<div class="qsScreenGlance">'+
-      '<div class="qsGlanceItem"><strong>Left panel</strong><span>bring content in &mdash; patterns, mock-ups, frames, images, pages</span></div>'+
+      '<div class="qsGlanceItem"><strong>Left panel</strong><span>bring content in &mdash; designs, mock-ups, frames, images, pages</span></div>'+
       '<div class="qsGlanceItem"><strong>Centre canvas</strong><span>your page &mdash; tap to select, drag to move, pinch to zoom</span></div>'+
       '<div class="qsGlanceItem"><strong>Right panel</strong><span>edit what&rsquo;s selected &mdash; layers, size, alignment, colour</span></div>'+
     '</div>'+
@@ -3811,7 +3898,7 @@ function ppBuildQuickStartHTML(){
     '<div class="qsSteps">'+stepsHtml+'</div>'+
     '<h3>Handy shortcuts</h3>'+
     '<table class="qsTable"><tbody>'+shortcutsHtml+'</tbody></table>'+
-    '<div class="qsNote">Nothing is placed automatically &mdash; patterns wait in the tray until you fill a slot or frame with them. Save a <strong>.ppages</strong> file regularly; quick save and autosave are convenient, but a real saved file is your safest backup.</div>';
+    '<div class="qsNote">Nothing is placed automatically &mdash; designs wait in the tray until you fill a slot or frame with them. Save a <strong>.ppages</strong> file regularly; quick save and autosave are convenient, but a real saved file is your safest backup.</div>';
 }
 
 function openQuickStartGuide(){
@@ -4298,7 +4385,7 @@ button,select,input[type=number],input[type=text],input[type=color]{
     if(left && !left.querySelector('.panelIntro.leftIntro')){
       var d=document.createElement('div');
       d.className='panelIntro leftIntro';
-      d.innerHTML='<strong>assets & pages</strong><span>upload patterns, choose page sizes, then build frames and layouts.</span>';
+      d.innerHTML='<strong>assets & pages</strong><span>upload designs, choose page sizes, then build frames and layouts.</span>';
       left.insertBefore(d,left.firstChild);
     }
     if(right && !right.querySelector('.panelIntro.rightIntro')){
@@ -6279,9 +6366,122 @@ document.addEventListener('click', function(e){
     list.forEach(t=>addTagIdea(out,t));
     return out.slice(0,13);
   }
+  const LISTING_CATEGORIES = {
+    apparel:{ fallbackWord:'design',
+      always:['svg design','png design'],
+      subjectPool:['t-shirt design','sublimation design','iron on design','vinyl design','dtf design','cricut design'],
+      moodPool:['svg design','png design','sublimation design','t-shirt design'],
+      styleSuffixPool:['svg design','png design','sublimation png','iron on design','vinyl design'],
+      genericAlways:['svg png design','commercial use'],
+      genericPool:['sublimation design','iron on design','vinyl cut file','dtf design','cricut design','heat transfer design','graphic tee design','print on demand'],
+      longTail:['{subject} svg design','{subject} png sublimation','{subject} t-shirt design','funny {subject} shirt design','{mood} svg design','{subject} iron on design'],
+      fruitExtra:['summer fruit svg design','tropical fruit t-shirt design'],
+      titleSuffixMain:'SVG PNG Design', titleKeyword:'svg',
+      titleExtras:['{Subject} Sublimation PNG','{Mood} T-Shirt Design','Commercial Use SVG'],
+      pinterestSeeds:['{subject} svg design','{subject} sublimation png','{subject} t-shirt design idea','{mood} design inspiration'],
+      hashtagExtra:['svgdesign','sublimation','printondemand','etsyseller','smallbusiness'] },
+    jewelry:{ fallbackWord:'piece',
+      always:['necklace','earrings'],
+      subjectPool:['bracelet','charm','jewelry design','pendant','ring'],
+      moodPool:['necklace','earrings','jewelry gift'],
+      styleSuffixPool:['necklace','earrings','bracelet','jewelry'],
+      genericAlways:['handmade jewelry','gift for her'],
+      genericPool:['dainty jewelry','minimalist jewelry','statement jewelry','custom jewelry','personalized gift','bridesmaid gift'],
+      longTail:['handmade {subject} necklace','{subject} earrings gift','dainty {subject} jewelry','{mood} charm bracelet','personalized {subject} necklace'],
+      titleSuffixMain:'Handmade Jewelry', titleKeyword:'jewelry',
+      titleExtras:['{Subject} Necklace','{Mood} Earrings','Gift For Her'],
+      pinterestSeeds:['{subject} necklace idea','handmade {subject} jewelry','{mood} earrings inspiration'],
+      hashtagExtra:['handmadejewelry','giftforher','etsyjewelry','smallbusiness'] },
+    candles:{ fallbackWord:'candle',
+      always:['soy candle','scented candle'],
+      subjectPool:['candle','wax melt','candle label','candle gift'],
+      moodPool:['candle','soy candle'],
+      styleSuffixPool:['candle','soy candle','wax melt'],
+      genericAlways:['hand poured candle','soy wax candle'],
+      genericPool:['self care gift','cozy home decor','candle gift set','aromatherapy candle','farmhouse candle'],
+      longTail:['{subject} scented soy candle','hand poured {subject} candle','{mood} candle gift','{subject} wax melt'],
+      titleSuffixMain:'Scented Soy Candle', titleKeyword:'candle',
+      titleExtras:['{Subject} Soy Candle','Hand Poured Gift','{Mood} Candle'],
+      pinterestSeeds:['{subject} candle idea','hand poured {subject} candle','cozy {mood} candle'],
+      hashtagExtra:['soycandle','handpoured','candlegift','smallbusiness'] },
+    stickers:{ fallbackWord:'sticker',
+      always:['vinyl sticker','sticker sheet'],
+      subjectPool:['sticker','die cut sticker','planner sticker','laptop sticker'],
+      moodPool:['sticker','sticker sheet'],
+      styleSuffixPool:['sticker','sticker sheet','vinyl sticker'],
+      genericAlways:['waterproof sticker','die cut sticker'],
+      genericPool:['planner sticker','kiss cut sticker','holographic sticker','sticker pack','laptop sticker'],
+      longTail:['cute {subject} sticker sheet','{subject} vinyl sticker','{mood} sticker pack','{subject} laptop sticker'],
+      titleSuffixMain:'Vinyl Sticker Sheet', titleKeyword:'sticker',
+      titleExtras:['{Subject} Sticker Sheet','{Mood} Sticker Pack','Waterproof Vinyl'],
+      pinterestSeeds:['{subject} sticker idea','cute {subject} sticker sheet','{mood} sticker pack'],
+      hashtagExtra:['stickersheet','vinylstickers','plannersticker','etsyseller'] },
+    planners:{ fallbackWord:'planner',
+      always:['printable planner','digital download'],
+      subjectPool:['planner','journal','notebook cover','planner insert'],
+      moodPool:['planner','journal'],
+      styleSuffixPool:['planner','journal','printable'],
+      genericAlways:['printable planner','instant download'],
+      genericPool:['journal cover design','planner insert','back to school','school supplies','digital planner'],
+      longTail:['printable {subject} planner','{subject} journal cover','{mood} planner insert','digital {subject} planner'],
+      titleSuffixMain:'Printable Planner', titleKeyword:'planner',
+      titleExtras:['{Subject} Journal Cover','{Mood} Planner Insert','Instant Download'],
+      pinterestSeeds:['{subject} planner idea','printable {subject} journal','{mood} planner cover'],
+      hashtagExtra:['printableplanner','digitaldownload','plannerlove','etsyseller'] },
+    homedecor:{ fallbackWord:'print',
+      always:['printable wall art','instant download'],
+      subjectPool:['wall art','art print','canvas print','poster'],
+      moodPool:['wall art','art print'],
+      styleSuffixPool:['wall art','art print','poster'],
+      genericAlways:['printable wall art','digital print'],
+      genericPool:['gallery wall art','minimalist print','poster print','instant download art','home decor print'],
+      longTail:['printable {subject} wall art','{subject} art print','{mood} poster print','digital {subject} print'],
+      titleSuffixMain:'Printable Wall Art', titleKeyword:'wall art',
+      titleExtras:['{Subject} Art Print','{Mood} Poster','Instant Download'],
+      pinterestSeeds:['{subject} wall art idea','printable {subject} art print','{mood} poster print'],
+      hashtagExtra:['wallart','printableart','homedecor','etsyseller'] },
+    digital:{ fallbackWord:'design',
+      always:['instant download','digital file'],
+      subjectPool:['clipart','printable','png design','digital download'],
+      moodPool:['clipart','printable'],
+      styleSuffixPool:['clipart','printable','png design'],
+      genericAlways:['instant download','digital file'],
+      genericPool:['printable design','clipart set','digital planner','png clipart','commercial use'],
+      longTail:['{subject} clipart set','printable {subject} design','{mood} digital download','{subject} png clipart'],
+      titleSuffixMain:'Digital Download', titleKeyword:'digital',
+      titleExtras:['{Subject} Clipart Set','{Mood} Printable','Instant Download'],
+      pinterestSeeds:['{subject} clipart idea','printable {subject} design','{mood} digital download'],
+      hashtagExtra:['digitaldownload','clipart','printable','etsyseller'] },
+    ceramics:{ fallbackWord:'mug',
+      always:['handmade mug','ceramic gift'],
+      subjectPool:['mug','ceramic mug','pottery','tumbler'],
+      moodPool:['mug','pottery gift'],
+      styleSuffixPool:['mug','pottery','ceramic'],
+      genericAlways:['handmade ceramic','coffee gift'],
+      genericPool:['pottery gift','ceramic mug set','handmade pottery','custom mug','housewarming gift'],
+      longTail:['handmade {subject} mug','{subject} ceramic gift','{mood} coffee mug','custom {subject} pottery'],
+      titleSuffixMain:'Handmade Ceramic Mug', titleKeyword:'mug',
+      titleExtras:['{Subject} Ceramic Mug','{Mood} Pottery Gift','Housewarming Gift'],
+      pinterestSeeds:['{subject} mug idea','handmade {subject} pottery','{mood} coffee mug gift'],
+      hashtagExtra:['handmadepottery','ceramicmug','etsyseller','giftidea'] },
+    general:{ fallbackWord:'item',
+      always:['handmade','custom order'],
+      subjectPool:['design','gift','handmade item','keepsake'],
+      moodPool:['gift','handmade design'],
+      styleSuffixPool:['design','gift','handmade'],
+      genericAlways:['handmade','small business'],
+      genericPool:['custom order','made to order','personalized gift','gift idea','unique gift'],
+      longTail:['handmade {subject} gift','custom {subject} design','unique {mood} gift idea','personalized {subject} item'],
+      titleSuffixMain:'Handmade Design', titleKeyword:'handmade',
+      titleExtras:['{Subject} Custom Gift','{Mood} Handmade Design','Made To Order'],
+      pinterestSeeds:['{subject} gift idea','handmade {subject} design','{mood} custom gift'],
+      hashtagExtra:['handmade','smallbusiness','customgift','etsyseller'] }
+  };
   function generateListingHelper(){
     const name=(el('listingPatternName')?.value||'').trim();
     const keywords=(el('listingKeywords')?.value||'').trim();
+    const category=(el('listingCategory')?.value||'pattern');
+    const cfg=LISTING_CATEGORIES[category];
     const rawWords=cleanWords((name?name+', ':'')+keywords);
     const fillerWords=new Set(['pattern','seamless','digital','paper','print','png','repeat','repeating','tile','tiles','design','designs','and','with','for','the','a','an']);
     const weakFoodWords=new Set(['salad']);
@@ -6296,8 +6496,9 @@ document.addEventListener('click', function(e){
 
     const joined=(name+' '+keywords).toLowerCase();
     const hasAny=(arr)=>arr.some(x=>joined.includes(x));
-    const main=baseWords[0] || 'pattern';
-    const prettyName=titleCase(name || main+' pattern');
+    const catFallback=cfg?cfg.fallbackWord:'pattern';
+    const main=baseWords[0] || catFallback;
+    const prettyName=titleCase(name || main+' '+catFallback);
 
     const styleIdeas=[];
     if(hasAny(['strawberry','berry','berries'])) styleIdeas.push('berry');
@@ -6328,10 +6529,10 @@ document.addEventListener('click', function(e){
     // Real request, from a beta tester: hitting "generate" always produced the exact same 13
     // tags for the same name/keywords, every time - useful once, but no way to get a second set
     // of ideas to try, and Etsy sellers are generally advised to vary tags across relisted/
-    // duplicated listings rather than reuse one fixed set everywhere. "pattern"/"seamless" stay
-    // guaranteed on the subject (the single strongest, always-relevant pair for this app's actual
-    // product), but the rest is now drawn from a wider synonym pool and shuffled per generate, so
-    // clicking generate again on the same input yields a different, still-relevant mix.
+    // duplicated listings rather than reuse one fixed set everywhere. The subject's strongest,
+    // always-relevant format pair stays guaranteed, but the rest is now drawn from a wider
+    // synonym pool and shuffled per generate, so clicking generate again on the same input
+    // yields a different, still-relevant mix.
     const tagIdeas=[];
     const push=(x)=>{ if(x) tagIdeas.push(x); };
     // "cover design" as a suffix plus "cover" as the word it's suffixing (a real possibility now
@@ -6343,80 +6544,113 @@ document.addEventListener('click', function(e){
       if(!wl || !sl || sl===wl || sl.startsWith(wl+' ')) return;
       push(word+' '+suffix);
     };
-    const decorativeExtras=['wallpaper','background','clipart','wall art','gift wrap','textile','backdrop','swatch'];
-    const productExtras=['cover design','template','printable','digital download','stationery','cover art'];
-    const subjectFormatPool=['print','paper','fabric','repeat'].concat(isProductContext?productExtras:decorativeExtras);
-    ['pattern','seamless'].concat(shuffled(subjectFormatPool).slice(0,4)).forEach(f=>pushPair(subject,f));
-    if(mood && mood!==subject){
-      const moodFormatPool=['pattern','print','paper','fabric'].concat(isProductContext?['template','printable']:['wallpaper','clipart']);
-      shuffled(moodFormatPool).slice(0,3).forEach(f=>pushPair(mood,f));
-    }
-    const styleSuffixPool=['pattern','print','digital paper'].concat(isProductContext?['template','printable','cover design']:['wallpaper','clipart','fabric print']);
-    const styleSuffixes=shuffled(styleSuffixPool).slice(0,3);
-    styleIdeas.slice(0,8).forEach(w=>{
-      styleSuffixes.forEach(sfx=>pushPair(w,sfx));
-    });
-    const genericAlways=['seamless pattern','digital paper','commercial use'];
-    const genericPool=isProductContext
-      ? ['repeat pattern','scrapbook paper','fabric print','surface pattern','pod design','template design','printable download','craft supply','print on demand','digital download','cover design']
-      : ['repeat pattern','scrapbook paper','fabric print','surface pattern','pod design','wallpaper design','clipart set','gift wrap paper','textile design','wall art print','craft supply','print on demand'];
-    genericAlways.concat(shuffled(genericPool).slice(0,5)).forEach(push);
-    const etsyTags=uniqueTags(tagIdeas);
 
-    const longTailSeeds=[];
-    const longPush=(phrase)=>{ if(phrase) longTailSeeds.push(phrase); };
-    longPush(subject+' seamless pattern');
-    longPush(subject+' repeat pattern');
-    longPush(subject+' digital paper');
-    longPush(subject+' fabric print');
-    longPush(subject+' surface pattern design');
-    longPush('hand drawn '+subject+' pattern');
-    longPush('colourful '+subject+' pattern');
-    if(mood && mood!==subject){
-      longPush(mood+' seamless pattern');
-      longPush(mood+' repeat pattern');
-      longPush(mood+' fabric print');
-      longPush(mood+' digital paper');
+    let etsyTags, longTailSeeds, listingTitle, pinterestSeeds, hashtagSeeds;
+
+    if(category==='pattern' || !cfg){
+      const decorativeExtras=['wallpaper','background','clipart','wall art','gift wrap','textile','backdrop','swatch'];
+      const productExtras=['cover design','template','printable','digital download','stationery','cover art'];
+      const subjectFormatPool=['print','paper','fabric','repeat'].concat(isProductContext?productExtras:decorativeExtras);
+      ['pattern','seamless'].concat(shuffled(subjectFormatPool).slice(0,4)).forEach(f=>pushPair(subject,f));
+      if(mood && mood!==subject){
+        const moodFormatPool=['pattern','print','paper','fabric'].concat(isProductContext?['template','printable']:['wallpaper','clipart']);
+        shuffled(moodFormatPool).slice(0,3).forEach(f=>pushPair(mood,f));
+      }
+      const styleSuffixPool=['pattern','print','digital paper'].concat(isProductContext?['template','printable','cover design']:['wallpaper','clipart','fabric print']);
+      const styleSuffixes=shuffled(styleSuffixPool).slice(0,3);
+      styleIdeas.slice(0,8).forEach(w=>{
+        styleSuffixes.forEach(sfx=>pushPair(w,sfx));
+      });
+      const genericAlways=['seamless pattern','digital paper','commercial use'];
+      const genericPool=isProductContext
+        ? ['repeat pattern','scrapbook paper','fabric print','surface pattern','pod design','template design','printable download','craft supply','print on demand','digital download','cover design']
+        : ['repeat pattern','scrapbook paper','fabric print','surface pattern','pod design','wallpaper design','clipart set','gift wrap paper','textile design','wall art print','craft supply','print on demand'];
+      genericAlways.concat(shuffled(genericPool).slice(0,5)).forEach(push);
+      etsyTags=uniqueTags(tagIdeas);
+
+      longTailSeeds=[];
+      const longPush=(phrase)=>{ if(phrase) longTailSeeds.push(phrase); };
+      longPush(subject+' seamless pattern');
+      longPush(subject+' repeat pattern');
+      longPush(subject+' digital paper');
+      longPush(subject+' fabric print');
+      longPush(subject+' surface pattern design');
+      longPush('hand drawn '+subject+' pattern');
+      longPush('colourful '+subject+' pattern');
+      if(mood && mood!==subject){
+        longPush(mood+' seamless pattern');
+        longPush(mood+' repeat pattern');
+        longPush(mood+' fabric print');
+        longPush(mood+' digital paper');
+      }
+      if(hasAny(['fruit','strawberry','berry','pineapple','cherry'])){
+        longPush('summer fruit seamless pattern');
+        longPush('tropical fruit repeat pattern');
+        longPush('fruit pattern for fabric');
+        longPush('cute fruit digital paper');
+        longPush('summer picnic pattern');
+      }
+      longPush('commercial use seamless pattern');
+      longPush('print on demand pattern design');
+      longPush('digital paper for scrapbooking');
+
+      const titleParts=[];
+      const titleMain=prettyName.toLowerCase().includes('pattern') ? prettyName : prettyName+' Seamless Pattern';
+      titleParts.push(titleMain);
+      [
+        titleCase(subject)+' Digital Paper',
+        mood && mood!==subject ? titleCase(mood)+' Repeat Pattern' : 'Surface Pattern Design',
+        titleCase(subject)+' Fabric Print',
+        'Commercial Use PNG'
+      ].forEach(p=>{ if(p && !titleParts.map(x=>x.toLowerCase()).includes(p.toLowerCase())) titleParts.push(p); });
+      listingTitle=titleParts.slice(0,4).join(' | ');
+
+      pinterestSeeds=[
+        subject+' seamless pattern',
+        subject+' repeat pattern',
+        subject+' digital paper',
+        subject+' fabric print',
+        mood+' pattern inspiration',
+        'surface pattern design',
+        'fabric print design',
+        'digital paper design',
+        'commercial use pattern',
+        'print on demand design',
+        ...longTailSeeds
+      ];
+      hashtagSeeds=[subject,mood,...styleIdeas,'surface pattern design','seamless pattern','digital paper','fabric design','pattern designer','print on demand','etsy seller','creative business'];
+    } else {
+      cfg.always.concat(shuffled(cfg.subjectPool).slice(0,4)).forEach(f=>pushPair(subject,f));
+      if(mood && mood!==subject){
+        shuffled(cfg.moodPool).slice(0,3).forEach(f=>pushPair(mood,f));
+      }
+      const styleSuffixes=shuffled(cfg.styleSuffixPool).slice(0,3);
+      styleIdeas.slice(0,8).forEach(w=>{
+        styleSuffixes.forEach(sfx=>pushPair(w,sfx));
+      });
+      cfg.genericAlways.concat(shuffled(cfg.genericPool).slice(0,5)).forEach(push);
+      etsyTags=uniqueTags(tagIdeas);
+
+      const fillPhrase=(tpl)=>tpl.replace(/\{subject\}/g,subject).replace(/\{mood\}/g,mood);
+      const fillTitle=(tpl)=>tpl.replace(/\{Subject\}/g,titleCase(subject)).replace(/\{Mood\}/g,titleCase(mood));
+      longTailSeeds=cfg.longTail.map(fillPhrase);
+      if(cfg.fruitExtra && hasAny(['fruit','strawberry','berry','pineapple','cherry'])){
+        longTailSeeds.push(...cfg.fruitExtra.map(fillPhrase));
+      }
+
+      const titleParts=[];
+      const titleMain=prettyName.toLowerCase().includes(cfg.titleKeyword) ? prettyName : prettyName+' '+cfg.titleSuffixMain;
+      titleParts.push(titleMain);
+      cfg.titleExtras.map(fillTitle).forEach(p=>{ if(p && !titleParts.map(x=>x.toLowerCase()).includes(p.toLowerCase())) titleParts.push(p); });
+      listingTitle=titleParts.slice(0,4).join(' | ');
+
+      pinterestSeeds=[...cfg.pinterestSeeds.map(fillPhrase), ...longTailSeeds];
+      hashtagSeeds=[subject,mood,...styleIdeas,...cfg.hashtagExtra];
     }
-    if(hasAny(['fruit','strawberry','berry','pineapple','cherry'])){
-      longPush('summer fruit seamless pattern');
-      longPush('tropical fruit repeat pattern');
-      longPush('fruit pattern for fabric');
-      longPush('cute fruit digital paper');
-      longPush('summer picnic pattern');
-    }
-    longPush('commercial use seamless pattern');
-    longPush('print on demand pattern design');
-    longPush('digital paper for scrapbooking');
+
     const longTail=uniquePhrases(longTailSeeds, 16);
-
-    const titleParts=[];
-    const titleMain=prettyName.toLowerCase().includes('pattern') ? prettyName : prettyName+' Seamless Pattern';
-    titleParts.push(titleMain);
-    [
-      titleCase(subject)+' Digital Paper',
-      mood && mood!==subject ? titleCase(mood)+' Repeat Pattern' : 'Surface Pattern Design',
-      titleCase(subject)+' Fabric Print',
-      'Commercial Use PNG'
-    ].forEach(p=>{ if(p && !titleParts.map(x=>x.toLowerCase()).includes(p.toLowerCase())) titleParts.push(p); });
-    const listingTitle=titleParts.slice(0,4).join(' | ');
-
-    const pinterestSeeds=[
-      subject+' seamless pattern',
-      subject+' repeat pattern',
-      subject+' digital paper',
-      subject+' fabric print',
-      mood+' pattern inspiration',
-      'surface pattern design',
-      'fabric print design',
-      'digital paper design',
-      'commercial use pattern',
-      'print on demand design',
-      ...longTailSeeds
-    ];
     const pins=uniquePhrases(pinterestSeeds, 18);
 
-    const hashtagSeeds=[subject,mood,...styleIdeas,'surface pattern design','seamless pattern','digital paper','fabric design','pattern designer','print on demand','etsy seller','creative business'];
     const hashtagSeen=new Set();
     const hashtags=[];
     hashtagSeeds.forEach(raw=>{
@@ -6491,13 +6725,13 @@ document.addEventListener('click', function(e){
     // The old snapshot used window.state and produced tiny 449 byte empty .ppages files.
     const st = (typeof state !== 'undefined' && state) ? state : (window.state || {});
     return {
-      app:'Pattern Pages', version:'v183-real-ppages-save',
+      app:'Creative Pages', version:'v183-real-ppages-save',
       pages:st.pages||[], selectedPage:st.selectedPage||0, trays:st.trays||{pattern:[],asset:[]},
       zoom:st.zoom||1, leftHanded:!!st.leftHanded, leftCollapsed:!!st.leftCollapsed, rightCollapsed:!!st.rightCollapsed,
       customFonts:Object.assign({},window.ppCustomFonts||{}),
       docStyles:Object.assign({},window.ppDocStyles||{}),
       listingAssistant:{
-        patternName:getListingField('listingPatternName'), keywords:getListingField('listingKeywords'), etsyTags:getListingField('etsyTagsOutput'),
+        patternName:getListingField('listingPatternName'), keywords:getListingField('listingKeywords'), category:getListingField('listingCategory'), etsyTags:getListingField('etsyTagsOutput'),
         longTail:getListingField('longTailKeywordsOutput'), title:getListingField('listingTitleOutput'), pinterest:getListingField('pinterestKeywordsOutput'), instagram:getListingField('instagramHashtagsOutput')
       },
       savedAt:new Date().toISOString()
@@ -6576,7 +6810,7 @@ document.addEventListener('click', function(e){
     ['leftHanded','leftCollapsed','rightCollapsed'].forEach(k=>{ if(typeof data[k]==='boolean'){state[k]=data[k]; document.body.classList.toggle(k,data[k]);} });
     if(safe$('handModeBtn')) safe$('handModeBtn').textContent=state.leftHanded?'right-handed layout':'left-handed layout';
     const la=data.listingAssistant||{};
-    const map={listingPatternName:'patternName', listingKeywords:'keywords', etsyTagsOutput:'etsyTags', longTailKeywordsOutput:'longTail', listingTitleOutput:'title', pinterestKeywordsOutput:'pinterest', instagramHashtagsOutput:'instagram'};
+    const map={listingPatternName:'patternName', listingKeywords:'keywords', listingCategory:'category', etsyTagsOutput:'etsyTags', longTailKeywordsOutput:'longTail', listingTitleOutput:'title', pinterestKeywordsOutput:'pinterest', instagramHashtagsOutput:'instagram'};
     Object.keys(map).forEach(id=>{const n=safe$(id); if(n && la[map[id]]!=null)n.value=la[map[id]];});
     if(typeof window.render==='function') render();
     setStatus((source||'Project')+' restored.');
@@ -6770,14 +7004,14 @@ document.addEventListener('click', function(e){
   window.currentEtsyAssistantText=function(){
     const parts=[];
     const add=(title,value)=>{value=(value||'').trim(); if(value) parts.push(title+'\n'+value);};
-    add('PATTERN NAME',getListingField('listingPatternName'));
-    add('PATTERN THEME',getListingField('listingKeywords'));
+    add('ITEM NAME',getListingField('listingPatternName'));
+    add('ITEM DETAILS',getListingField('listingKeywords'));
     add('ETSY TAGS',getListingField('etsyTagsOutput'));
     add('LONG-TAIL KEYWORDS',getListingField('longTailKeywordsOutput'));
     add('LISTING TITLE',getListingField('listingTitleOutput'));
     add('PINTEREST KEYWORDS',getListingField('pinterestKeywordsOutput'));
     add('INSTAGRAM HASHTAGS',getListingField('instagramHashtagsOutput'));
-    const note='Generated by Pattern Pages Etsy Assistant. Suggestions only — no ranking or sales guarantees.';
+    const note='Generated by Creative Pages Etsy Assistant. Suggestions only — no ranking or sales guarantees.';
     return 'EtsyAssistant.txt\nSaved: '+new Date().toLocaleString()+'\n\n'+(parts.length?parts.join('\n\n'):'No Etsy Assistant text generated yet.')+'\n\n'+note+'\n';
   };
   window.downloadEtsyAssistantTxt=function(){
@@ -6885,7 +7119,7 @@ document.addEventListener('click', function(e){
       if(!data) return;
       const age=Date.now()-new Date(data.savedAt||0).getTime();
       if(data.pages && data.pages.length && age<1000*60*60*24*14){
-        setTimeout(()=>{ if(confirm('We found an unsaved Pattern Pages project. Restore it?')) applyProjectSnapshot(data,'Crash recovery'); },350);
+        setTimeout(()=>{ if(confirm('We found an unsaved Creative Pages project. Restore it?')) applyProjectSnapshot(data,'Crash recovery'); },350);
       }
     }).catch(()=>{});
     setTimeout(()=>window.saveAutoSaveNow(true),1200);
@@ -13365,7 +13599,7 @@ window.addEventListener('DOMContentLoaded',function(){
   // anywhere in the file calls ppRecolorLoadFile, and the live ppRecolorUseSelected never calls
   // ppRecolorLoadSrc either (it has its own ensureImageLoaded/loadImage pair).
   window.ppRecolorSwapColours=function(){var a=$('recolorFromColor'),b=$('recolorToColor'); if(!a||!b)return; var t=a.value; a.value=b.value; b.value=t; window.ppRecolorRender();}
-  window.ppRecolorAddToAssets=function(){var R=window.PPRecolorPNG; if(!R.result){alert('Recolour a PNG first.');return;} if(typeof state==='undefined'){alert('Pattern Pages state is not ready.');return;} state.trays=state.trays||{pattern:[],asset:[]}; state.trays.asset=state.trays.asset||[]; state.trays.asset.push({src:R.result,name:R.name||'recoloured.png'}); state.selectedTray=state.selectedTray||{}; state.selectedTray.asset=state.trays.asset.length-1; if(typeof renderTrays==='function') renderTrays(); status('Added recoloured PNG to Design Assets.');}
+  window.ppRecolorAddToAssets=function(){var R=window.PPRecolorPNG; if(!R.result){alert('Recolour a PNG first.');return;} if(typeof state==='undefined'){alert('Creative Pages state is not ready.');return;} state.trays=state.trays||{pattern:[],asset:[]}; state.trays.asset=state.trays.asset||[]; state.trays.asset.push({src:R.result,name:R.name||'recoloured.png'}); state.selectedTray=state.selectedTray||{}; state.selectedTray.asset=state.trays.asset.length-1; if(typeof renderTrays==='function') renderTrays(); status('Added recoloured PNG to Design Assets.');}
   // NOTE(consolidation): a window.ppRecolorReplaceSelected assignment that lived here was
   // removed - fully superseded by a later generation (confirmed via a fresh scan: the final
   // generation fully replaces with no fallback to a previous version), so it was dead code.
@@ -15142,7 +15376,7 @@ window.generatePatternShowcaseLayout=function(){
     if(!bar){
       bar=document.createElement('div');
       bar.className='ppMagicSelectionBar';
-      bar.innerHTML='<span class="ppMagicCount">tap patterns to select several</span><button type="button">clear selection</button>';
+      bar.innerHTML='<span class="ppMagicCount">tap designs to select several</span><button type="button">clear selection</button>';
       bar.querySelector('button').addEventListener('click',function(e){
         e.preventDefault(); e.stopPropagation(); selected=[]; schedulePaint();
       });
@@ -17555,14 +17789,14 @@ else install();
     var el=document.getElementById('layerList'); if(!el)return;
     el.innerHTML='';
     var list=layers().slice().sort(function(a,b){return (b.z||0)-(a.z||0);});
-    if(!list.length){el.innerHTML='<div class="smallText">No layers yet. Add a pattern frame, banner, label or shape.</div>';return;}
+    if(!list.length){el.innerHTML='<div class="smallText">No layers yet. Add a design frame, banner, label or shape.</div>';return;}
     list.forEach(function(l){ if(l && !l.groupId) el.appendChild(rowForLayerV170(l,'all')); });
   }
   function renderFrameListV170(){
     var el=document.getElementById('frameList'); if(!el)return;
     el.innerHTML='';
     var list=layers().filter(function(l){return l&&(['strip','card','pattern','frame'].indexOf(l.type)>=0||l.patternSlot);}).sort(function(a,b){return (b.z||0)-(a.z||0);});
-    if(!list.length){el.innerHTML='<div class="smallText">No pattern frames yet. Add strips, cards or frames above.</div>';return;}
+    if(!list.length){el.innerHTML='<div class="smallText">No design frames yet. Add strips, cards or frames above.</div>';return;}
     list.forEach(function(l){el.appendChild(rowForLayerV170(l,'frames'));});
   }
   // NOTE(consolidation): window.renderLayers used to also be exposed here,
@@ -18013,10 +18247,10 @@ else install();
     box.className='box trayTop templateToolsBox';
     box.id='templateToolsBox';
     box.innerHTML='<h2>templates</h2><div class="panelBody">\
-      <p class="templateNote">Build a layout once with pattern placeholders and custom mock-ups mixed in, save it as a <strong>.ptemplate</strong>, then reuse it for every new pattern - load the template, pick a pattern, and fill everything at once.</p>\
-      <button type="button" class="full primary" onclick="addLkmPlaceholder(\'main pattern\')" title="Mark a spot on the page that gets filled automatically from the tray">add placeholder</button>\
-      <div class="templateGrid"><button type="button" class="primary" onclick="fillLinkedPlaceholdersFromTray()" title="Fill every placeholder at once with the selected pattern">fill all with selected pattern</button><button type="button" onclick="clearLinkedPlaceholders()" title="Empty every placeholder slot">clear slots</button></div>\
-      <div class="lkmTagRow"><span class="lkmTag">source: main pattern</span><span class="lkmTag">includes mock-ups</span></div>\
+      <p class="templateNote">Build a layout once with design placeholders and custom mock-ups mixed in, save it as a <strong>.ptemplate</strong>, then reuse it for every new design - load the template, pick a design, and fill everything at once.</p>\
+      <button type="button" class="full primary" onclick="addLkmPlaceholder(\'main design\')" title="Mark a spot on the page that gets filled automatically from the tray">add placeholder</button>\
+      <div class="templateGrid"><button type="button" class="primary" onclick="fillLinkedPlaceholdersFromTray()" title="Fill every placeholder at once with the selected design">fill all with selected design</button><button type="button" onclick="clearLinkedPlaceholders()" title="Empty every placeholder slot">clear slots</button></div>\
+      <div class="lkmTagRow"><span class="lkmTag">source: main design</span><span class="lkmTag">includes mock-ups</span></div>\
       <div class="templateGrid"><button type="button" onclick="downloadPatternPagesTemplate()" title="Save this layout as a reusable template - placeholder artwork is removed, banners and text are kept">save template</button><button type="button" onclick="openPatternPagesTemplateLoader()" title="Load a previously saved template">load template</button></div>\
       <div class="templateAdvancedLabel">advanced: mark other layers as placeholders</div>\
       <p class="smallText">Banners, frames or other image layers can be marked as placeholders too. Custom mock-ups are always included automatically - no marking needed for those.</p>\
@@ -18076,12 +18310,12 @@ else install();
   }
   function makeTemplateSnapshot(){
     return {
-      app:'Pattern Pages',kind:'ptemplate',templateVersion:PP_TEMPLATE_VERSION,savedAt:new Date().toISOString(),
+      app:'Creative Pages',kind:'ptemplate',templateVersion:PP_TEMPLATE_VERSION,savedAt:new Date().toISOString(),
       pages:(state.pages||[]).map(function(p){return Object.assign({},p,{layers:(p.layers||[]).map(strippedLayer)})}),
       selectedPage:state.selectedPage||0,zoom:state.zoom||1,leftHanded:!!state.leftHanded,
       customFonts:Object.assign({},window.ppCustomFonts||{}),
       docStyles:Object.assign({},window.ppDocStyles||{}),
-      note:'Pattern Pages template file. Placeholder artwork is removed, but template banners and overlays are kept.'
+      note:'Creative Pages template file. Placeholder artwork is removed, but template banners and overlays are kept.'
     };
   }
   window.downloadPatternPagesTemplate=function(){
@@ -18273,7 +18507,7 @@ else install();
     return {pages:pages,selectedPage:sel,trays:(root&&root.trays)||(data&&data.trays)||{pattern:[],asset:[]},zoom:Number((root&&root.zoom)||(data&&data.zoom)||1)||1,leftHanded:!!(root&&root.leftHanded),leftCollapsed:!!(root&&root.leftCollapsed),rightCollapsed:!!(root&&root.rightCollapsed),customFonts:(root&&root.customFonts)||(data&&data.customFonts)||{},docStyles:(root&&root.docStyles)||(data&&data.docStyles)||{}};
   }
   function applyProject(project){
-    var st=S(); if(!st) throw new Error('Pattern Pages state is not ready yet. Please wait one second and tap load again.');
+    var st=S(); if(!st) throw new Error('Creative Pages state is not ready yet. Please wait one second and tap load again.');
     st.pages=project.pages; st.selectedPage=project.selectedPage; st.selected=null; st.lastDeselected=null;
     st.trays=project.trays||st.trays||{pattern:[],asset:[]}; st.zoom=project.zoom||1;
     if(project.customFonts && typeof window.registerCustomFont==='function'){
@@ -18704,7 +18938,7 @@ else install();
           else if(typeof window.rowForLayer==='function')el.appendChild(window.rowForLayer(l,'all'));
         });
       }
-      if(!showcase.length&&!list.length)el.innerHTML='<div class="smallText">No layers yet. Add a pattern frame, banner, label or shape.</div>';
+      if(!showcase.length&&!list.length)el.innerHTML='<div class="smallText">No layers yet. Add a design frame, banner, label or shape.</div>';
       syncGroupToolbarButtons();
     };
     try{renderLayers=window.renderLayers;}catch(e){}
@@ -20817,7 +21051,7 @@ window.addEventListener('resize',sync);document.addEventListener('scroll',functi
   });
   function buildReportText(){
     var lines=[];
-    lines.push('Pattern Pages debug report');
+    lines.push('Creative Pages debug report');
     lines.push('Generated: '+new Date().toString());
     lines.push('User agent: '+navigator.userAgent);
     lines.push('Viewport: '+window.innerWidth+'x'+window.innerHeight);
@@ -21015,4 +21249,130 @@ body.leftCollapsed.rightCollapsed .stage.pattern,body.leftCollapsed.rightCollaps
     overflow:visible!important;
   }
 </style>
+
+<!-- Shop Brand Kit: lets a seller save their shop's colours + font once and stamp them onto
+     text/label layers across a page (or every page) in one tap, instead of re-picking the same
+     colour and font by hand on every new listing image. Deliberately only touches type 'text'
+     and 'label' layers (fonts + badges) - never images, shapes or groups - so it can't clobber an
+     uploaded design or photo. -->
+<script id="pp-shop-brand-kit">
+(function(){
+  function appState(){ try{ return (typeof state!=='undefined' && state) ? state : (window.state||null); }catch(e){ return window.state||null; } }
+  const BRAND_KIT_KEY='creativePages.brandKit.v1';
+  function $(id){ return document.getElementById(id); }
+  function populateBrandFontSelect(){
+    const src=$('fontFamily'), dst=$('brandFont');
+    if(!src||!dst) return;
+    if(dst.innerHTML!==src.innerHTML) dst.innerHTML=src.innerHTML;
+  }
+  function readForm(){
+    return {
+      shopName:($('brandShopName')&&$('brandShopName').value)||'',
+      primary:($('brandColorPrimary')&&$('brandColorPrimary').value)||'#1a1024',
+      secondary:($('brandColorSecondary')&&$('brandColorSecondary').value)||'#ffffff',
+      font:($('brandFont')&&$('brandFont').value)||'system-ui'
+    };
+  }
+  function writeForm(kit){
+    if(!kit) return;
+    if($('brandShopName')) $('brandShopName').value=kit.shopName||'';
+    if($('brandColorPrimary')&&kit.primary) $('brandColorPrimary').value=kit.primary;
+    if($('brandColorSecondary')&&kit.secondary) $('brandColorSecondary').value=kit.secondary;
+    if($('brandFont')&&kit.font) $('brandFont').value=kit.font;
+  }
+  window.saveBrandKit=function(){
+    populateBrandFontSelect();
+    const kit=readForm();
+    try{ localStorage.setItem(BRAND_KIT_KEY, JSON.stringify(kit)); }catch(e){}
+    const st=$('brandKitStatus'); if(st) st.textContent='Brand kit saved for '+(kit.shopName||'your shop')+'.';
+  };
+  window.loadBrandKit=function(){
+    populateBrandFontSelect();
+    let kit=null;
+    try{ const raw=localStorage.getItem(BRAND_KIT_KEY); if(raw) kit=JSON.parse(raw); }catch(e){}
+    const st=$('brandKitStatus');
+    if(!kit){ if(st) st.textContent='No brand kit saved yet.'; return; }
+    writeForm(kit);
+    if(st) st.textContent='Loaded brand kit for '+(kit.shopName||'your shop')+'.';
+  };
+  window.applyBrandKit=function(scope){
+    const s=appState();
+    if(!s || !s.pages || !s.pages.length){ alert('Add a page first.'); return; }
+    populateBrandFontSelect();
+    const kit=readForm();
+    if(typeof window.save==='function'){ try{ window.save(); }catch(e){} }
+    const pages = scope==='all' ? s.pages : [s.pages[s.selectedPage||0]];
+    let touched=0;
+    pages.forEach(p=>{
+      if(!p||!p.layers) return;
+      p.layers.forEach(l=>{
+        if(l.type==='text' || l.type==='label'){
+          l.color=kit.primary; l.font=kit.font; touched++;
+          if(l.type==='label'){ l.fill=kit.secondary; l.border=kit.primary; }
+        }
+      });
+    });
+    if(typeof window.render==='function') window.render();
+    const st=$('brandKitStatus');
+    if(st) st.textContent = touched
+      ? 'Applied brand kit to '+touched+' text/label layer'+(touched===1?'':'s')+(scope==='all'?' across all pages.':' on this page.')
+      : 'No text or label layers to update yet — add some, then apply again.';
+  };
+  function init(){ populateBrandFontSelect(); window.loadBrandKit(); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+</script>
+
+<!-- One-click batch listing set: Etsy listings do best with several coordinated photos (main,
+     detail, lifestyle, info, variations), but building each one by hand is the single most
+     repetitive part of using this app. This reuses the existing linked-placeholder ("templates")
+     mechanism - the same one behind "fill all with selected design" - so the placeholders it
+     creates are filled the normal way, just pre-arranged into a sensible 5-page starting set. -->
+<script id="pp-batch-listing-set">
+(function(){
+  function appState(){ try{ return (typeof state!=='undefined' && state) ? state : (window.state||null); }catch(e){ return window.state||null; } }
+  window.createBatchListingSet=function(){
+    const s=appState();
+    if(!s || !s.pages){ alert('Give the app a second to finish loading, then try again.'); return; }
+    if(typeof window.addLkmPlaceholder!=='function' || typeof window.addText!=='function'){
+      alert('Batch listing set needs the templates and text tools loaded — reload the page and try again.');
+      return;
+    }
+    if(typeof window.save==='function'){ try{ window.save(); }catch(e){} }
+
+    const startIndex=s.pages.length;
+    for(let i=0;i<5;i++){ s.pages.push({type:'Etsy Listing Image', w:3000, h:2250, layers:[]}); }
+
+    function goTo(i){ s.selectedPage=startIndex+i; }
+    function lastLayer(){ const p=s.pages[s.selectedPage]; return p && p.layers[p.layers.length-1]; }
+
+    goTo(0); window.addLkmPlaceholder('main design');
+
+    goTo(1); window.addLkmPlaceholder('detail shot');
+
+    goTo(2); window.addLkmPlaceholder('lifestyle mock-up');
+
+    goTo(3);
+    window.addText();
+    let heading=lastLayer();
+    if(heading){ Object.assign(heading,{text:'Your Listing Title Here',x:10,y:16,w:80,h:20,fontSize:64,bold:true,textAlign:'center',name:'heading'}); }
+    window.addText();
+    let body=lastLayer();
+    if(body){ Object.assign(body,{text:'Add sizing, materials, care instructions or shipping details here.',x:14,y:44,w:72,h:40,fontSize:34,textAlign:'center',name:'body copy'}); }
+
+    goTo(4);
+    const gridSlots=[[8,10],[52,10],[8,52],[52,52]];
+    gridSlots.forEach((pos,idx)=>{
+      window.addLkmPlaceholder('option '+(idx+1));
+      const slot=lastLayer();
+      if(slot){ slot.x=pos[0]; slot.y=pos[1]; slot.w=40; slot.h=38; }
+    });
+
+    s.selectedPage=startIndex; s.selected=null;
+    if(typeof window.render==='function') window.render();
+    const st=document.getElementById('batchSetStatus');
+    if(st) st.textContent='Created 5 pages: main shot, detail, lifestyle/mock-up, info card and collection grid. Pick a design in the tray, then "fill all with selected design" to fill every placeholder at once.';
+  };
+})();
+</script>
 
