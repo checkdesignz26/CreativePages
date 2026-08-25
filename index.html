@@ -1402,7 +1402,21 @@ body.autoGroupEditing .layer.collectionGrouped{
 
   <div class="box trayTop"><h2>images & mock-ups</h2><input id="assetInput" class="hidden" type="file" accept="image/*" multiple onchange="loadTray(event,'asset')"><input id="mockupInput" class="hidden" type="file" accept="image/*" onchange="createMockupPage(event)"><input id="imageLayerInput" class="hidden" type="file" accept="image/*" onchange="addUploadedImageLayer(event)"><button class="full" onclick="assetInput.click()">Upload Design Assets</button><div id="assetTray" class="thumbGrid"></div><div class="grid2"><button onclick="addImageLayer('image')">add selected image</button><button onclick="mockupInput.click()">mock-up page</button></div><div class="grid2"><button onclick="addImageLayer('banner')">banner</button><button onclick="addImageLayer('overlay')">overlay</button></div><div class="aiDisclosureControls"><label class="checkRow"><input id="aiDisclosureToggle" type="checkbox" checked>add movable “AI generated” badge to mock-up</label><button class="full" onclick="addAIDisclosureBadge()">add AI generated badge</button><p class="smallText">Subtle white pill with fixed soft-grey text. Resize the badge shape, but the words stay readable.</p></div><p class="smallText">One tray for images, banners and mock-ups. Images now arrive at a useful page size instead of tiny; resize them afterwards if needed.</p></div>
   <div class="box batchSetBox"><h2>batch listing set</h2>
-    <p class="smallText">Etsy wants several photos per listing. One tap builds a coordinated 5-page set — main shot, detail, lifestyle/mock-up, an info card and a collection grid — all placeholders, ready to fill from the Design Tray. Labels follow whatever category you've picked in <strong>Etsy Assistant</strong> below (pattern, jewelry, candles...), so a pattern shop gets "colourway" slots and a candle shop gets "scent" slots automatically.</p>
+    <p class="smallText">Etsy wants several photos per listing. One tap builds a coordinated 5-page set — main shot, detail, lifestyle/mock-up, an info card and a collection grid — ready to fill from the Design Tray.</p>
+    <label for="batchSetCategory">what are you making?</label>
+    <select id="batchSetCategory" onchange="if(typeof syncAllCategorySelectors==='function') syncAllCategorySelectors('batchSetCategory', this.value);">
+      <option value="pattern">seamless pattern / surface design</option>
+      <option value="apparel">apparel &amp; print-on-demand (shirts, svg, sublimation)</option>
+      <option value="jewelry">jewelry &amp; accessories</option>
+      <option value="candles">candles &amp; home fragrance</option>
+      <option value="stickers">stickers &amp; vinyl</option>
+      <option value="planners">planners, journals &amp; paper goods</option>
+      <option value="homedecor">wall art &amp; home decor</option>
+      <option value="digital">digital downloads &amp; clipart</option>
+      <option value="ceramics">ceramics, pottery &amp; mugs</option>
+      <option value="general">other handmade item</option>
+    </select>
+    <p class="smallText">Pick a design in the <strong>Design Tray</strong> first (or upload one) — with a category that has starter mock-ups (currently apparel), the lifestyle page is composited automatically; every other slot gets filled with that same design. No design yet? You still get all 5 pages, ready to fill by hand.</p>
     <button class="full primary" onclick="createBatchListingSet()">✨ create listing set</button>
     <div class="status" id="batchSetStatus">Nothing created yet.</div>
   </div>
@@ -21392,26 +21406,40 @@ body.leftCollapsed.rightCollapsed .stage.pattern,body.leftCollapsed.rightCollaps
 })();
 </script>
 
-<!-- Keeps the Etsy Assistant "what are you selling?" category and the custom mock-up "mock-up
-     type" dropdowns in sync - they used to be two unrelated selectors, so picking t-shirt in one
-     didn't tell the other, and the batch listing set (which reads the Etsy Assistant category to
-     decide whether to auto-build a mock-up) never knew apparel had been picked at all. -->
+<!-- Keeps "what are you selling?" (Etsy Assistant), "mock-up type" (custom mock-up panel) and
+     "what are you making?" (batch listing set) in sync - three separate selectors used to be
+     three unrelated pieces of state, so picking apparel in one never told the others, and a user
+     had no way to know that a choice made in a completely different panel was a prerequisite for
+     a button to work as expected. Change any one of the three and the other two follow. -->
 <script id="pp-category-mockup-sync">
   var LISTING_TO_MOCKUP_TYPE = { pattern:'pattern', apparel:'apparel', jewelry:'other', candles:'candle', stickers:'sticker', planners:'planner', homedecor:'print', digital:'other', ceramics:'mug', general:'other' };
   var MOCKUP_TYPE_TO_LISTING = { pattern:'pattern', apparel:'apparel', mug:'ceramics', tote:'apparel', candle:'candles', sticker:'stickers', planner:'planners', print:'homedecor', other:'general' };
-  function syncCategoryMockupType(source, value){
+  function syncAllCategorySelectors(sourceId, value){
     var listingEl=document.getElementById('listingCategory');
     var mockupEl=document.getElementById('customMockupType');
+    var batchEl=document.getElementById('batchSetCategory');
     if(!listingEl||!mockupEl) return;
-    if(source==='listing'){
-      var target=LISTING_TO_MOCKUP_TYPE[value];
-      if(target && mockupEl.value!==target){ mockupEl.value=target; if(typeof applyMockupTypePreset==='function') applyMockupTypePreset(target); }
+    var listingValue, mockupValue;
+    if(sourceId==='customMockupType'){
+      mockupValue=value;
+      listingValue=MOCKUP_TYPE_TO_LISTING[value] || listingEl.value;
     } else {
-      var target2=MOCKUP_TYPE_TO_LISTING[value];
-      if(target2 && listingEl.value!==target2) listingEl.value=target2;
+      // listingCategory and batchSetCategory share the same option values directly.
+      listingValue=value;
+      mockupValue=LISTING_TO_MOCKUP_TYPE[value] || mockupEl.value;
     }
+    if(listingEl.value!==listingValue) listingEl.value=listingValue;
+    if(mockupEl.value!==mockupValue){ mockupEl.value=mockupValue; if(typeof applyMockupTypePreset==='function') applyMockupTypePreset(mockupValue); }
+    if(batchEl && batchEl.value!==listingValue) batchEl.value=listingValue;
   }
-  window.syncCategoryMockupType=syncCategoryMockupType;
+  window.syncAllCategorySelectors=syncAllCategorySelectors;
+  // Back-compat name some earlier-wired onchange handlers still call.
+  window.syncCategoryMockupType=function(source, value){ syncAllCategorySelectors(source==='listing'?'listingCategory':'customMockupType', value); };
+  function initCategorySync(){
+    var listingEl=document.getElementById('listingCategory');
+    if(listingEl) syncAllCategorySelectors('listingCategory', listingEl.value);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', initCategorySync); else initCategorySync();
 </script>
 
 <!-- One-click batch listing set: Etsy listings do best with several coordinated photos (main,
