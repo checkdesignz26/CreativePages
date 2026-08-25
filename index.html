@@ -21378,6 +21378,13 @@ body.leftCollapsed.rightCollapsed .stage.pattern,body.leftCollapsed.rightCollaps
     if(statusEl) statusEl.textContent='mock-up \u2713 mask \u2713 \u2014 pick a design in the tray, then create';
     document.querySelectorAll('.starterMockupBtn').forEach((b,i)=>b.classList.toggle('active', i===idx));
   };
+  // Exposed so other scripts (the batch listing set) can grab a starter mock-up's bg/mask
+  // without needing their own copy of the embedded image data. idx defaults to 0 if out of range.
+  window.getStarterMockup=function(category, idx){
+    const list=STARTER_MOCKUPS[category];
+    if(!list || !list.length) return null;
+    return list[idx] || list[0];
+  };
   const typeSelEl=document.getElementById('customMockupType');
   if(typeSelEl) typeSelEl.addEventListener('change', renderGrid);
   function init(){ renderGrid(); }
@@ -21419,7 +21426,41 @@ body.leftCollapsed.rightCollapsed .stage.pattern,body.leftCollapsed.rightCollaps
     general:{ main:'main design', detail:'close-up detail', lifestyle:'styled mock-up', pageType:'Etsy Listing Image',
       heading:'Your Listing Title Here', body:'Add sizing, materials or care instructions here.', collectionPrefix:'option' }
   };
-  window.createBatchListingSet=function(){
+  // Which STARTER_MOCKUPS key (from pp-starter-mockups) matches each Etsy Assistant category -
+  // only apparel has starter templates today, but this is where a future ceramics->mug or
+  // candles->candle mapping would go once those templates exist.
+  const CATEGORY_TO_MOCKUP_TYPE = { apparel:'apparel' };
+
+  // Tries to build the lifestyle page as a real composited mock-up (starter template + whichever
+  // design is selected in the tray) instead of a blank placeholder. Both outcomes are meant to be
+  // possible: this only fires when a starter template AND an uploaded design both exist yet: any
+  // other case - no starter template for this category, or no design uploaded - falls back to the
+  // ordinary blank placeholder so the batch set always finishes successfully either way.
+  async function tryAutoMockupLifestylePage(s, category){
+    const mockupType=CATEGORY_TO_MOCKUP_TYPE[category];
+    if(!mockupType || typeof window.getStarterMockup!=='function') return false;
+    const template=window.getStarterMockup(mockupType, 1); // index 1: the more "styled" shot of the set
+    if(!template) return false;
+    if(!s.trays || !s.trays.pattern || !s.trays.pattern.length) return false; // nothing uploaded to composite yet
+
+    const win=window;
+    win.PP_MOCKUP_PAPARAZZI_CAGE_V163=win.PP_MOCKUP_PAPARAZZI_CAGE_V163||{bg:null,mask:null,pattern:null,timer:null,ticket:0,busy:false,cache:new Map()};
+    win.PP_MOCKUP_PAPARAZZI_CAGE_V163.bg=template.bg;
+    win.PP_MOCKUP_PAPARAZZI_CAGE_V163.mask=template.mask;
+    if(typeof win.toggleCustomMockupRepeat==='function') win.toggleCustomMockupRepeat(false); // apparel: single fill, no tiling
+
+    if(typeof win.createCustomMockupFromMask!=='function') return false;
+    const pagesBefore=s.pages.length;
+    try{
+      await win.createCustomMockupFromMask();
+    }catch(e){ console.error('Auto mock-up for batch listing set failed', e); return false; }
+    // createCustomMockupFromMask always appends its OWN new page rather than filling the current
+    // one - that only works out to the right slot in the set because this runs at exactly the
+    // point in the sequence where the lifestyle page belongs. Confirm it actually added one.
+    return s.pages.length===pagesBefore+1;
+  }
+
+  window.createBatchListingSet=async function(){
     const s=appState();
     if(!s || !s.pages){ alert('Give the app a second to finish loading, then try again.'); return; }
     if(typeof window.addLkmPlaceholder!=='function' || typeof window.addText!=='function'){
@@ -21433,18 +21474,17 @@ body.leftCollapsed.rightCollapsed .stage.pattern,body.leftCollapsed.rightCollaps
     const L=BATCH_SET_LABELS[category] || BATCH_SET_LABELS.general;
 
     const startIndex=s.pages.length;
-    for(let i=0;i<5;i++){ s.pages.push({type:L.pageType, w:3000, h:2250, layers:[]}); }
-
-    function goTo(i){ s.selectedPage=startIndex+i; }
+    function newPage(){ s.pages.push({type:L.pageType, w:3000, h:2250, layers:[]}); s.selectedPage=s.pages.length-1; }
     function lastLayer(){ const p=s.pages[s.selectedPage]; return p && p.layers[p.layers.length-1]; }
 
-    goTo(0); window.addLkmPlaceholder(L.main);
+    newPage(); window.addLkmPlaceholder(L.main);
 
-    goTo(1); window.addLkmPlaceholder(L.detail);
+    newPage(); window.addLkmPlaceholder(L.detail);
 
-    goTo(2); window.addLkmPlaceholder(L.lifestyle);
+    const autoMockup=await tryAutoMockupLifestylePage(s, category);
+    if(!autoMockup){ newPage(); window.addLkmPlaceholder(L.lifestyle); }
 
-    goTo(3);
+    newPage();
     window.addText();
     let heading=lastLayer();
     if(heading){ Object.assign(heading,{text:L.heading,x:10,y:16,w:80,h:20,fontSize:64,bold:true,textAlign:'center',name:'heading'}); }
@@ -21452,7 +21492,7 @@ body.leftCollapsed.rightCollapsed .stage.pattern,body.leftCollapsed.rightCollaps
     let body=lastLayer();
     if(body){ Object.assign(body,{text:L.body,x:14,y:44,w:72,h:40,fontSize:34,textAlign:'center',name:'body copy'}); }
 
-    goTo(4);
+    newPage();
     const gridSlots=[[8,10],[52,10],[8,52],[52,52]];
     gridSlots.forEach((pos,idx)=>{
       window.addLkmPlaceholder(L.collectionPrefix+' '+(idx+1));
@@ -21463,7 +21503,8 @@ body.leftCollapsed.rightCollapsed .stage.pattern,body.leftCollapsed.rightCollaps
     s.selectedPage=startIndex; s.selected=null;
     if(typeof window.render==='function') window.render();
     const st=document.getElementById('batchSetStatus');
-    if(st) st.textContent='Created 5 pages: '+L.main+', '+L.detail+', '+L.lifestyle+', info card and a '+L.collectionPrefix+' grid. Pick a design in the tray, then "fill all with selected design" to fill every placeholder at once.';
+    const lifestylePart=autoMockup ? (L.lifestyle+' (auto mock-up ✨)') : L.lifestyle;
+    if(st) st.textContent='Created 5 pages: '+L.main+', '+L.detail+', '+lifestylePart+', info card and a '+L.collectionPrefix+' grid. Pick a design in the tray, then "fill all with selected design" to fill every remaining placeholder at once.';
   };
 })();
 </script>
