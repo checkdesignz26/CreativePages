@@ -1368,7 +1368,7 @@ body.autoGroupEditing .layer.collectionGrouped{
   <div class="box trayTop customMockupBox"><h2>custom mock-up</h2><div class="panelBody">
     <p class="customMockupHint"><strong>Procreate → Creative Pages.</strong> Upload your mock-up background and white mask, then create the mock-up in one click. Picking a design first fills it right away - skip that step and it's created as a placeholder (clipped and blended the same way) that you can fill later.</p>
     <label for="customMockupType">mock-up type</label>
-    <select id="customMockupType" onchange="applyMockupTypePreset(this.value)">
+    <select id="customMockupType" onchange="applyMockupTypePreset(this.value); if(typeof syncCategoryMockupType==='function') syncCategoryMockupType('mockup', this.value);">
       <option value="pattern">seamless pattern / fabric</option>
       <option value="apparel">t-shirt / apparel</option>
       <option value="mug">mug / tumbler</option>
@@ -1455,7 +1455,7 @@ body.autoGroupEditing .layer.collectionGrouped{
 <div class="box listingHelperBox"><h2>Etsy Assistant ✨</h2>
   <p class="smallText">Generate Etsy tags, long-tail keywords, listing titles and social media keywords for any kind of listing.</p>
   <label for="listingCategory">what are you selling?</label>
-  <select id="listingCategory">
+  <select id="listingCategory" onchange="if(typeof syncCategoryMockupType==='function') syncCategoryMockupType('listing', this.value);">
     <option value="pattern">seamless pattern / surface design</option>
     <option value="apparel">apparel &amp; print-on-demand (shirts, svg, sublimation)</option>
     <option value="jewelry">jewelry &amp; accessories</option>
@@ -21392,6 +21392,28 @@ body.leftCollapsed.rightCollapsed .stage.pattern,body.leftCollapsed.rightCollaps
 })();
 </script>
 
+<!-- Keeps the Etsy Assistant "what are you selling?" category and the custom mock-up "mock-up
+     type" dropdowns in sync - they used to be two unrelated selectors, so picking t-shirt in one
+     didn't tell the other, and the batch listing set (which reads the Etsy Assistant category to
+     decide whether to auto-build a mock-up) never knew apparel had been picked at all. -->
+<script id="pp-category-mockup-sync">
+  var LISTING_TO_MOCKUP_TYPE = { pattern:'pattern', apparel:'apparel', jewelry:'other', candles:'candle', stickers:'sticker', planners:'planner', homedecor:'print', digital:'other', ceramics:'mug', general:'other' };
+  var MOCKUP_TYPE_TO_LISTING = { pattern:'pattern', apparel:'apparel', mug:'ceramics', tote:'apparel', candle:'candles', sticker:'stickers', planner:'planners', print:'homedecor', other:'general' };
+  function syncCategoryMockupType(source, value){
+    var listingEl=document.getElementById('listingCategory');
+    var mockupEl=document.getElementById('customMockupType');
+    if(!listingEl||!mockupEl) return;
+    if(source==='listing'){
+      var target=LISTING_TO_MOCKUP_TYPE[value];
+      if(target && mockupEl.value!==target){ mockupEl.value=target; if(typeof applyMockupTypePreset==='function') applyMockupTypePreset(target); }
+    } else {
+      var target2=MOCKUP_TYPE_TO_LISTING[value];
+      if(target2 && listingEl.value!==target2) listingEl.value=target2;
+    }
+  }
+  window.syncCategoryMockupType=syncCategoryMockupType;
+</script>
+
 <!-- One-click batch listing set: Etsy listings do best with several coordinated photos (main,
      detail, lifestyle, info, variations), but building each one by hand is the single most
      repetitive part of using this app. This reuses the existing linked-placeholder ("templates")
@@ -21500,11 +21522,38 @@ body.leftCollapsed.rightCollapsed .stage.pattern,body.leftCollapsed.rightCollaps
       if(slot){ slot.x=pos[0]; slot.y=pos[1]; slot.w=40; slot.h=38; }
     });
 
+    // Fill every remaining plain placeholder (main, detail, collection grid) with whatever design
+    // is currently selected in the tray - the lifestyle page either already got a real composited
+    // mock-up above, or is itself a placeholder that gets filled here too. Every slot in the
+    // collection grid gets the same design for now (there's only ever one selected at a time);
+    // filling each with a different colourway/variant is a natural next step once that's wanted.
+    let filledCount=0;
+    const designSrc=(function(){
+      try{
+        if(s.trays && s.trays.pattern && s.trays.pattern.length){
+          const idx=(s.selectedTray && Number.isInteger(s.selectedTray.pattern)) ? s.selectedTray.pattern : 0;
+          const item=s.trays.pattern[idx] || s.trays.pattern[0];
+          return (item && item.src) || null;
+        }
+      }catch(e){}
+      return null;
+    })();
+    if(designSrc){
+      s.pages.slice(startIndex).forEach(p=>{
+        (p.layers||[]).forEach(l=>{
+          if(l.lkmPlaceholder && !l.src){ l.src=designSrc; l.fit=l.fit||'cover'; l.patternSlot=true; filledCount++; }
+        });
+      });
+    }
+
     s.selectedPage=startIndex; s.selected=null;
     if(typeof window.render==='function') window.render();
     const st=document.getElementById('batchSetStatus');
     const lifestylePart=autoMockup ? (L.lifestyle+' (auto mock-up ✨)') : L.lifestyle;
-    if(st) st.textContent='Created 5 pages: '+L.main+', '+L.detail+', '+lifestylePart+', info card and a '+L.collectionPrefix+' grid. Pick a design in the tray, then "fill all with selected design" to fill every remaining placeholder at once.';
+    const fillNote=designSrc
+      ? (filledCount ? ' Filled '+filledCount+' placeholder'+(filledCount===1?'':'s')+' with your selected design.' : ' All slots were already filled.')
+      : ' Upload a design into the tray, then use "fill all with selected design" to fill the remaining placeholders.';
+    if(st) st.textContent='Created 5 pages: '+L.main+', '+L.detail+', '+lifestylePart+', info card and a '+L.collectionPrefix+' grid.'+fillNote;
   };
 })();
 </script>
