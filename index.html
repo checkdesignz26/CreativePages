@@ -1489,7 +1489,7 @@ body.autoGroupEditing .layer.collectionGrouped{
   <div class="grid2"><button class="primary" onclick="saveBrandKit()">save brand kit</button><button onclick="loadBrandKit()">reload saved</button></div>
   <div class="grid2"><button class="primary" onclick="applyBrandKit('page')">apply to this page</button><button onclick="applyBrandKit('all')">apply to all pages</button></div>
   <div class="status" id="brandKitStatus">No brand kit saved yet.</div>
-  <p class="mockupTinyNote">Applying a brand kit updates the font colour on text &amp; labels to your primary colour, badge fills to your secondary colour, and switches their font to your brand font. It never touches your uploaded designs or photos.</p>
+  <p class="mockupTinyNote">Applying a brand kit switches text &amp; labels to your brand font, colours bold text (headings) with your primary colour and regular-weight text (body copy) with your secondary colour, and fills badge shapes with your secondary colour. It never touches your uploaded designs or photos.</p>
 </div>
 
 <div class="box"><h2>extra design elements</h2>
@@ -21307,7 +21307,12 @@ body.leftCollapsed.rightCollapsed .stage.pattern,body.leftCollapsed.rightCollaps
       if(!p||!p.layers) return;
       p.layers.forEach(l=>{
         if(l.type==='text' || l.type==='label'){
-          l.color=kit.primary; l.font=kit.font; touched++;
+          // Bold text reads as a heading (titles, the batch listing set's "heading" layer) and
+          // gets the primary colour; regular-weight text reads as body/supporting copy (the
+          // batch set's "body copy" layer) and gets the secondary colour - otherwise secondary
+          // never shows up at all on a page that's just plain text with no badge shape.
+          l.color = l.bold ? kit.primary : kit.secondary;
+          l.font=kit.font; touched++;
           if(l.type==='label'){ l.fill=kit.secondary; l.border=kit.primary; }
         }
       });
